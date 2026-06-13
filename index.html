@@ -40,9 +40,20 @@
 <div class="container-fluid py-4 d-none" id="dashboardScreen">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <h3 class="mb-0">Escuelas - <span class="badge bg-secondary" id="lblNivel"></span></h3>
-        <div>
+             <div class="d-flex align-items-center gap-2">
+            <!-- Campanita de notificaciones -->
+            <div class="dropdown">
+                <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAsRead()">
+                    <i class="bi bi-bell-fill"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end p-3 shadow" style="width: 350px; max-height: 300px; overflow-y: auto;" id="notifList">
+                    <li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>
+                </ul>
+            </div>
             <button class="btn btn-success" onclick="openCreateModal()"><i class="bi bi-plus-circle"></i> Agregar</button>
             <button class="btn btn-info text-white" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Descargar Excel</button>
+            <button class="btn btn-secondary" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
             <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
         </div>
     </div>
@@ -124,7 +135,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxS91AeIYSp--ZiTIS4zsq0wDJWuwEzUjJCAHIygbuXTR8bS3TFfM0Z04uSqtwkMKAM/exec'; // ¡NO OLVIDES TU URL!
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwSe2CD39km-PC4Khxvq1IZ7EQSq4XJnnhira9eJGNp1TXBYP6VfrV6HFv9F9DLTS1J/exec'; // ¡NO OLVIDES TU URL!
     let currentUser = null;
     let currentData = [];
     let filteredData = [];
@@ -159,6 +170,40 @@
         const resp = await fetch(url, options);
         return await resp.json();
     }
+        // Consultar notificaciones (solo para Admin)
+    async function checkNotifications() {
+        if (!currentUser || currentUser.nivel !== 'ADMIN') return;
+        
+        const res = await apiRequest({ action: 'getNotifications', username: currentUser.username, password: currentUser.pass });
+        if (res.success) {
+            const notifs = res.data;
+            const badge = document.getElementById('notifBadge');
+            const list = document.getElementById('notifList');
+            
+            if (notifs.length > 0) {
+                badge.innerText = notifs.length;
+                badge.classList.remove('d-none');
+                
+                list.innerHTML = '';
+                notifs.forEach(n => {
+                    list.innerHTML += `
+                        <li class="dropdown-item-text border-bottom pb-2 mb-2">
+                            <small class="text-muted">${n.fecha} - <strong>${n.usuario}</strong></small><br>
+                            <span>${n.accion}: ${n.detalle}</span>
+                        </li>
+                    `;
+                });
+            } else {
+                badge.classList.add('d-none');
+                list.innerHTML = '<li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>';
+            }
+        }
+    }
+
+    // Cuando el admin abre la campanita, ya se marcaron como leídas desde el servidor, solo ocultamos el badge
+    function markAsRead() {
+        document.getElementById('notifBadge').classList.add('d-none');
+    }
 
     async function login() {
         const btnLogin = document.getElementById('btnLogin');
@@ -177,6 +222,8 @@
         if(res.success) {
             currentUser = res.user;
             currentUser.pass = pass;
+            // GUARDAR SESIÓN EN EL NAVEGADOR
+            sessionStorage.setItem('crudUser', JSON.stringify(currentUser));
             document.getElementById('loginScreen').classList.add('d-none');
             document.getElementById('dashboardScreen').classList.remove('d-none');
             document.getElementById('lblNivel').innerText = currentUser.nivel;
@@ -189,9 +236,14 @@
 
     function logout() {
         currentUser = null;
+         // LIMPIAR SESIÓN DEL NAVEGADOR
+        sessionStorage.removeItem('crudUser');
         document.getElementById('loginScreen').classList.remove('d-none');
         document.getElementById('dashboardScreen').classList.add('d-none');
         document.getElementById('txtPass').type = 'password';
+        // Limpiar campos por si acaso
+        document.getElementById('txtUser').value = '';
+        document.getElementById('txtPass').value = '';
     }
 
     async function loadData() {
@@ -478,6 +530,22 @@
             alert("Error: " + res.message);
         }
     }
+        // VERIFICAR SI HAY SESIÓN GUARDADA AL CARGAR LA PÁGINA
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const savedUser = sessionStorage.getItem('crudUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            document.getElementById('loginScreen').classList.add('d-none');
+            document.getElementById('dashboardScreen').classList.remove('d-none');
+            document.getElementById('lblNivel').innerText = currentUser.nivel;
+            loadData(); // Cargar los datos automáticamente
+         // Revisar notificaciones cada 60 segundos (60000 ms) si es Admin
+            if(currentUser.nivel === 'ADMIN') {
+                checkNotifications(); // Revisar al iniciar
+                setInterval(checkNotifications, 60000); // Revisar cada minuto
+            }
+        }
+    });
 </script>
 </body>
 </html>
