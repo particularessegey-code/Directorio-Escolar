@@ -11,6 +11,16 @@
     <style>
         body { background-color: #f4f7f6; }
         .login-container { max-width: 400px; margin: 100px auto; }
+        /* Estilo para el enlace del Área */
+        .area-link {
+            color: #0d6efd;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .area-link:hover {
+            color: #0a58ca;
+        }
     </style>
 </head>
 <body>
@@ -134,12 +144,12 @@
     </div>
 </div>
 
-<!-- NUEVO MODAL PARA VER UBICACIÓN (MAPA) -->
+<!-- MODAL PARA VER UBICACIÓN (MAPA) -->
 <div class="modal fade" id="mapModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="bi bi-geo-alt-fill"></i> Ubicación de la Escuela</h5>
+                <h5 class="modal-title" id="mapModalTitle"><i class="bi bi-geo-alt-fill"></i> Ubicación</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-0">
@@ -163,6 +173,36 @@
     // Variables de Paginación
     let currentPage = 1;
     const rowsPerPage = 50; 
+
+    // DICCIONARIO DE ENLACES DE MY MAPS POR ÁREA
+    const AREA_MAPS = {
+        "1": "https://www.google.com/maps/d/edit?mid=1O2LZuplQF89Tz5r6dmOFWsXjARzjdJo&usp=sharing",
+        "2": "https://www.google.com/maps/d/edit?mid=1ZsjRxT1AAuXPfFYSqvg-kWjw5jOiIts&usp=sharing",
+        "3": "https://www.google.com/maps/d/edit?mid=1LWonti-VeOrxEXykGXaG6C8gsHTMGqw&usp=sharing",
+        "4": "https://www.google.com/maps/d/edit?mid=1RMRpotaU_C32_lYL2vBtsSUxnhCbBoA&usp=sharing",
+        "5": "https://www.google.com/maps/d/edit?mid=1twKhveAcVg6Sm7blQl3wOXI7NEUJfqg&usp=sharing",
+        "6": "https://www.google.com/maps/d/edit?mid=1Ng8hQLUigoBWnkn6vGXCPpfpCvyhLoY&usp=sharing",
+        "7": "https://www.google.com/maps/d/edit?mid=1nuyb-WCIvLgoDLAco9q3MrV6GxZv0Zg&usp=sharing",
+        "8": "https://www.google.com/maps/d/edit?mid=1sHd35NFb_FhpolO-fF994hzPc6i7qfY&usp=sharing",
+        "9": "https://www.google.com/maps/d/edit?mid=1iU-cPI36Hfvy0R6_5ZzCHrulINUXtss&usp=sharing",
+        "10": "https://www.google.com/maps/d/edit?mid=1Zrw0AZOUgtiSAZmjyKoyCe0HMoZvnOI&usp=sharing",
+        "11": "https://www.google.com/maps/d/edit?mid=1m1bA02onQzyeCFn0jLDM8h_JceOxY60&usp=sharing",
+        "12": "https://www.google.com/maps/d/edit?mid=16sbaor0eTj_GJxz_pXBptZ02At8hDMQ&usp=sharing",
+        "13": "https://www.google.com/maps/d/edit?mid=1IfxZhWrX4J7eo6Pa-E2Gq4NO1CWDesA&usp=sharing",
+        "14": "https://www.google.com/maps/d/edit?mid=1eKvPOFXLNy96a8abMdm-11Rycb5Ha88&usp=sharing",
+        "15": "https://www.google.com/maps/d/edit?mid=1B9p0qGH-swONp3NiHnzW6jk2it7MwGM&usp=sharing",
+        "16": "https://www.google.com/maps/d/edit?mid=1VIUKvbgJSVeYUJZN1ccqGySXYadiv0g&usp=sharing",
+        "17": "https://www.google.com/maps/d/edit?mid=1pl9S90DEu1b7RwJ5MxCdaTRkPIkuUi0&usp=sharing",
+        "18": "https://www.google.com/maps/d/edit?mid=11wEZini7dosqcdJo5Z1ZSwvmPyrzNOw&usp=sharing",
+        "19": "https://www.google.com/maps/d/edit?mid=116fLXXkSl3Mce8VS-3l6T9MrDCY2tNs&usp=sharing",
+        "20": "https://www.google.com/maps/d/edit?mid=1ak533QU67TVHO7PMF0V8BuF9Lwgdu4w&usp=sharing",
+        "21": "https://www.google.com/maps/d/edit?mid=1UBtrW2XFw9v1Y_E9CZt6FAr3aMHd3I8&usp=sharing",
+        "22": "https://www.google.com/maps/d/edit?mid=1zmLOT5SNW1RqyZW6SYZ1k8gcXyyvfhI&usp=sharing",
+        "23": "https://www.google.com/maps/d/edit?mid=1GiEpeqQs0qxivxtKRm1hoPcPpcFWeRw&usp=sharing",
+        "24": "https://www.google.com/maps/d/edit?mid=1ktzvnk20zG9MUD3xD9lxT6bU-NOgirw&usp=sharing",
+        "25": "https://www.google.com/maps/d/edit?mid=182Zw0A-JOlQhdAFaxnhJA1XYoWeLHzI&usp=sharing",
+        "26": "https://www.google.com/maps/d/edit?mid=1NHdVwGEKdtbKF2wTWDaGcP3QWq5AFMs&usp=sharing"
+    };
 
     // Función del ojo para la contraseña
     document.getElementById('togglePassword').addEventListener('click', function () {
@@ -301,6 +341,12 @@
                     ? `<button class="btn btn-sm btn-primary me-1" onclick='openLocation(${JSON.stringify(row)})' title="Ver Ubicación"><i class="bi bi-geo-alt-fill"></i></button>`
                     : `<button class="btn btn-sm btn-secondary me-1" disabled title="Sin ubicación"><i class="bi bi-geo-alt-fill"></i></button>`;
 
+                // Lógica para el enlace del Área
+                const areaVal = (row['AREA'] || '').toString().trim();
+                const areaHtml = AREA_MAPS[areaVal] 
+                    ? `<span class="area-link" onclick="openAreaMap('${areaVal}')">${row['AREA']}</span>` 
+                    : row['AREA'];
+
                 tbody.innerHTML += `
                     <tr>
                         <td class="text-center">${row['NUM.']}</td>
@@ -308,7 +354,7 @@
                         <td>${row['NOMBRE ESCUELA']}</td>
                         <td>${row['TURNO']}</td>
                         <td>${row['MUNICIPIO']}</td>
-                        <td>${row['AREA']}</td>
+                        <td class="text-center">${areaHtml}</td>
                         <td class="text-center"><span class="badge bg-${row['STATUS']==='ACTIVO'?'success':'danger'}">${row['STATUS']}</span></td>
                         <td class="text-center">
                             ${locationBtn}
@@ -323,12 +369,11 @@
         renderPagination(totalPages);
     }
 
-    // NUEVA FUNCIÓN PARA ABRIR EL MAPA
+    // FUNCIÓN PARA ABRIR EL MAPA DE LA ESCUELA
     function openLocation(row) {
         const url = row['UBICACION'];
         if (!url) return;
         
-        // Modificamos la URL para que se pueda embeber en un iframe
         let embedUrl = url;
         if (!url.includes('output=embed')) {
             embedUrl += (url.includes('?') ? '&' : '?') + 'output=embed';
@@ -336,6 +381,24 @@
 
         document.getElementById('mapFrame').src = embedUrl;
         document.getElementById('mapLink').href = url;
+        document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Ubicación de la Escuela`;
+        new bootstrap.Modal(document.getElementById('mapModal')).show();
+    }
+
+    // NUEVA FUNCIÓN PARA ABRIR EL MAPA DEL ÁREA
+    function openAreaMap(area) {
+        const url = AREA_MAPS[area];
+        if (!url) return;
+        
+        // Extraer el ID (mid) de la URL de Google My Maps para poder embeberlo
+        const midMatch = url.match(/mid=([^&]+)/);
+        if (!midMatch) return alert("Error al procesar el mapa del área.");
+        
+        const embedUrl = `https://www.google.com/maps/d/embed?mid=${midMatch[1]}`;
+        
+        document.getElementById('mapFrame').src = embedUrl;
+        document.getElementById('mapLink').href = url; // El botón abre el editor completo
+        document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Mapa del Área ${area}`;
         new bootstrap.Modal(document.getElementById('mapModal')).show();
     }
 
