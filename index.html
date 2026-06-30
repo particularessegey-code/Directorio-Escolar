@@ -314,12 +314,14 @@
         filteredData = currentData.filter(row => {
             const nombre = normalizeString(row['NOMBRE ESCUELA'] || '');
             const clave = normalizeString(row['CLAVE C.C.T.'] || '');
-            return nombre.includes(searchTerm) || clave.includes(searchTerm);
+             const nivel = normalizeString(row['NIVEL'] || ''); // <-- NUEVO: Obtenemos el nivel
+            
+            // <-- NUEVO: Agregamos la condición para que busque por nivel también
+            return nombre.includes(searchTerm) || clave.includes(searchTerm) || nivel.includes(searchTerm);
         });
         currentPage = 1; 
         renderTable();
     }
-
     function renderTable() {
         const tbody = document.getElementById('tblData');
         tbody.innerHTML = '';
@@ -381,7 +383,8 @@
 
         document.getElementById('mapFrame').src = embedUrl;
         document.getElementById('mapLink').href = url;
-        document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Ubicación de la Escuela`;
+        // AQUÍ AGREGAMOS EL NOMBRE DE LA ESCUELA AL TÍTULO
+        document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Ubicación de: ${row['NOMBRE ESCUELA']}`;
         new bootstrap.Modal(document.getElementById('mapModal')).show();
     }
 
