@@ -63,7 +63,7 @@
             </div>
             <button class="btn btn-success" onclick="openCreateModal()"><i class="bi bi-plus-circle"></i> Agregar</button>
             <button class="btn btn-info text-white" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Descargar Excel</button>
-            <button class="btn btn-secondary" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
+            <button class="btn btn-secondary d-none" id="btnRefresh" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
             <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
         </div>
     </div>
@@ -273,7 +273,7 @@
         }
     }
 
-     async function login() {
+        async function login() {
         const btnLogin = document.getElementById('btnLogin');
         const spinner = document.getElementById('loginSpinner');
         const user = document.getElementById('txtUser').value.trim();
@@ -292,22 +292,23 @@
             document.getElementById('lblNivel').innerText = currentUser.nivel;
             loadData();
             
-            // --- MOSTRAR U OCULTAR CAMPANITA ---
+            // Mostrar u ocultar elementos de Admin
             if(currentUser.nivel === 'ADMIN') {
-                document.getElementById('notifContainer').classList.remove('d-none'); // Mostrar
+                document.getElementById('notifContainer').classList.remove('d-none');
+                document.getElementById('btnRefresh').classList.remove('d-none'); // Mostrar Refrescar
                 checkNotifications(); 
                 setInterval(checkNotifications, 60000); 
             } else {
-                document.getElementById('notifContainer').classList.add('d-none'); // Ocultar
+                document.getElementById('notifContainer').classList.add('d-none');
+                document.getElementById('btnRefresh').classList.add('d-none'); // Ocultar Refrescar
             }
-            // ------------------------------------
-
+            
         } else {
             document.getElementById('loginError').innerText = res.message;
             document.getElementById('loginError').classList.remove('d-none');
         }
     }
-    function logout() {
+        function logout() {
         currentUser = null;
         sessionStorage.removeItem('crudUser');
         document.getElementById('loginScreen').classList.remove('d-none');
@@ -315,8 +316,10 @@
         document.getElementById('txtPass').type = 'password';
         document.getElementById('txtUser').value = '';
         document.getElementById('txtPass').value = '';
-        // Ocultar campanita al cerrar sesión
+        
+        // Ocultar elementos de Admin al cerrar sesión
         document.getElementById('notifContainer').classList.add('d-none');
+        document.getElementById('btnRefresh').classList.add('d-none'); // Ocultar Refrescar
     }
 
     async function loadData() {
@@ -612,11 +615,13 @@
             document.getElementById('lblNivel').innerText = currentUser.nivel;
             loadData(); 
             if(currentUser.nivel === 'ADMIN') {
-                document.getElementById('notifContainer').classList.remove('d-none'); // Mostrar si es admin
+                document.getElementById('notifContainer').classList.remove('d-none');
+                document.getElementById('btnRefresh').classList.remove('d-none'); // Mostrar Refrescar
                 checkNotifications(); 
                 setInterval(checkNotifications, 60000); 
             } else {
-                document.getElementById('notifContainer').classList.add('d-none'); // Ocultar si no lo es
+                document.getElementById('notifContainer').classList.add('d-none');
+                document.getElementById('btnRefresh').classList.add('d-none'); // Ocultar Refrescar
             }
         }
     });
