@@ -51,9 +51,9 @@
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <h3 class="mb-0">Escuelas - <span class="badge bg-secondary" id="lblNivel"></span></h3>
              <div class="d-flex align-items-center gap-2">
-            <!-- Campanita de notificaciones -->
-            <div class="dropdown">
-                <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAsRead()">
+                       <!-- Campanita de notificaciones -->
+            <div class="dropdown d-none" id="notifContainer">
+                <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-bell-fill"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
                 </button>
@@ -218,6 +218,10 @@
             eyeIcon.classList.add('bi-eye-slash');
         }
     });
+        // Detectar cuándo se CIERRA el menú de notificaciones para marcarlas como leídas
+    document.getElementById('btnNotif').addEventListener('hidden.bs.dropdown', function () {
+        markAsRead();
+    });
 
     async function apiRequest(params, method='GET', body=null) {
         let url = API_URL;
@@ -256,11 +260,20 @@
         }
     }
 
-    function markAsRead() {
+     async function markAsRead() {
+        // 1. Ocultamos la campanita visualmente
         document.getElementById('notifBadge').classList.add('d-none');
+        
+        // 2. Limpiamos la lista visual
+        document.getElementById('notifList').innerHTML = '<li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>';
+        
+        // 3. Avisamos a Google Sheets para que ya no nos las envíe la próxima vez
+        if (currentUser && currentUser.nivel === 'ADMIN') {
+            await apiRequest({ action: 'markNotifsAsRead', username: currentUser.username, password: currentUser.pass });
+        }
     }
 
-    async function login() {
+     async function login() {
         const btnLogin = document.getElementById('btnLogin');
         const spinner = document.getElementById('loginSpinner');
         const user = document.getElementById('txtUser').value.trim();
@@ -278,12 +291,22 @@
             document.getElementById('dashboardScreen').classList.remove('d-none');
             document.getElementById('lblNivel').innerText = currentUser.nivel;
             loadData();
+            
+            // --- MOSTRAR U OCULTAR CAMPANITA ---
+            if(currentUser.nivel === 'ADMIN') {
+                document.getElementById('notifContainer').classList.remove('d-none'); // Mostrar
+                checkNotifications(); 
+                setInterval(checkNotifications, 60000); 
+            } else {
+                document.getElementById('notifContainer').classList.add('d-none'); // Ocultar
+            }
+            // ------------------------------------
+
         } else {
             document.getElementById('loginError').innerText = res.message;
             document.getElementById('loginError').classList.remove('d-none');
         }
     }
-
     function logout() {
         currentUser = null;
         sessionStorage.removeItem('crudUser');
@@ -292,6 +315,8 @@
         document.getElementById('txtPass').type = 'password';
         document.getElementById('txtUser').value = '';
         document.getElementById('txtPass').value = '';
+        // Ocultar campanita al cerrar sesión
+        document.getElementById('notifContainer').classList.add('d-none');
     }
 
     async function loadData() {
@@ -578,7 +603,7 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', (event) => {
+        window.addEventListener('DOMContentLoaded', (event) => {
         const savedUser = sessionStorage.getItem('crudUser');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
@@ -587,8 +612,11 @@
             document.getElementById('lblNivel').innerText = currentUser.nivel;
             loadData(); 
             if(currentUser.nivel === 'ADMIN') {
+                document.getElementById('notifContainer').classList.remove('d-none'); // Mostrar si es admin
                 checkNotifications(); 
                 setInterval(checkNotifications, 60000); 
+            } else {
+                document.getElementById('notifContainer').classList.add('d-none'); // Ocultar si no lo es
             }
         }
     });
