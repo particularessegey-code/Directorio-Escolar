@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Librería para exportar a Excel -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-    <style>
+        <style>
         body { background-color: #f4f7f6; }
         .login-container { max-width: 400px; margin: 100px auto; }
+        
         /* Estilo para el enlace del Área */
         .area-link {
             color: #0d6efd;
@@ -20,6 +21,28 @@
         }
         .area-link:hover {
             color: #0a58ca;
+        }
+
+        /* NUEVO: Congelar la barra superior (título, botones y búsqueda) */
+        #topBar {
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            background-color: #f4f7f6;
+            padding-top: 1.5rem;
+            padding-bottom: 1rem;
+        }
+
+        /* NUEVO: Scroll interno para la tabla y congelar encabezado */
+        .table-responsive {
+            max-height: 65vh; /* Altura máxima de la tabla antes de hacer scroll */
+            overflow-y: auto;
+        }
+        .table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1010;
+            background-color: #212529 !important; /* Mantiene el color oscuro del encabezado */
         }
     </style>
 </head>
@@ -48,34 +71,40 @@
 
 <!-- DASHBOARD -->
 <div class="container-fluid py-4 d-none" id="dashboardScreen">
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-        <h3 class="mb-0">Escuelas - <span class="badge bg-secondary" id="lblNivel"></span></h3>
-             <div class="d-flex align-items-center gap-2">
-                       <!-- Campanita de notificaciones -->
-            <div class="dropdown d-none" id="notifContainer">
-                <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-bell-fill"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end p-3 shadow" style="width: 350px; max-height: 300px; overflow-y: auto;" id="notifList">
-                    <li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>
-                </ul>
-            </div>
-            <button class="btn btn-success" onclick="openCreateModal()"><i class="bi bi-plus-circle"></i> Agregar</button>
-            <button class="btn btn-info text-white" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Descargar Excel</button>
-            <button class="btn btn-secondary d-none" id="btnRefresh" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
-            <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
-        </div>
-    </div>
     
-    <div class="card shadow-sm mb-4">
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <input type="text" id="searchInput" class="form-control w-75" placeholder="Buscar por Nombre o Clave..." onkeyup="filterTable()">
-            <span class="text-muted" id="lblCount">0 escuelas</span>
+    <!-- ENVOLVEMOS LA PARTE SUPERIOR EN topBar -->
+    <div id="topBar">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h3 class="mb-0">Escuelas - <span class="badge bg-secondary" id="lblNivel"></span></h3>
+                 <div class="d-flex align-items-center gap-2">
+                <!-- Campanita de notificaciones -->
+                <div class="dropdown d-none" id="notifContainer">
+                    <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell-fill"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end p-3 shadow" style="width: 350px; max-height: 300px; overflow-y: auto;" id="notifList">
+                        <li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>
+                    </ul>
+                </div>
+                <button class="btn btn-success" onclick="openCreateModal()"><i class="bi bi-plus-circle"></i> Agregar</button>
+                <button class="btn btn-info text-white" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Descargar Excel</button>
+                <button class="btn btn-secondary d-none" id="btnRefresh" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
+                <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-0"> <!-- Cambié mb-4 a mb-0 para que no haya doble espacio -->
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <input type="text" id="searchInput" class="form-control w-75" placeholder="Buscar por Nombre, Clave o Nivel..." onkeyup="filterTable()">
+                <span class="text-muted" id="lblCount">0 escuelas</span>
+            </div>
         </div>
     </div>
+    <!-- FIN DE topBar -->
 
-    <div class="card shadow-sm">
+    <!-- A la tarjeta de la tabla le puse un margen superior mt-3 para separarla -->
+    <div class="card shadow-sm mt-3">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover table-bordered align-middle">
