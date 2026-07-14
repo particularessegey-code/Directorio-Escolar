@@ -362,6 +362,33 @@
         }
     }
 
+        // Nueva función para refrescar sin perder la página ni la búsqueda
+    async function refreshData() {
+        const res = await apiRequest({ action: 'read', username: currentUser.username, password: currentUser.pass });
+        if(res.success) {
+            currentData = res.data;
+            
+            // Volver a aplicar el filtro de búsqueda SIN reiniciar la página
+            const searchTerm = normalizeString(document.getElementById('searchInput').value);
+            filteredData = currentData.filter(row => {
+                const nombre = normalizeString(row['NOMBRE ESCUELA'] || '');
+                const clave = normalizeString(row['CLAVE C.C.T.'] || '');
+                const nivel = normalizeString(row['NIVEL'] || '');
+                return nombre.includes(searchTerm) || clave.includes(searchTerm) || nivel.includes(searchTerm);
+            });
+            
+            // Verificar que la página actual siga existiendo (por si se eliminaron registros)
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            if (currentPage > totalPages) {
+                currentPage = totalPages > 0 ? totalPages : 1;
+            }
+            
+            renderTable(); // Renderizar sin forzar la página 1
+        } else {
+            alert("Error al cargar datos: " + res.message);
+        }
+    }
+
     function normalizeString(str) {
         return str.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
@@ -616,7 +643,7 @@
         const res = await apiRequest({}, 'POST', payload);
         if(res.success) {
             bootstrap.Modal.getInstance(document.getElementById('schoolModal')).hide();
-            loadData();
+            refreshData();
             alert(res.message);
         } else {
             alert("Error: " + res.message);
@@ -628,7 +655,7 @@
         const payload = { username: currentUser.username, password: currentUser.pass, action: 'delete', row: rowId };
         const res = await apiRequest({}, 'POST', payload);
         if(res.success) {
-            loadData();
+            refreshData();
             alert(res.message);
         } else {
             alert("Error: " + res.message);
