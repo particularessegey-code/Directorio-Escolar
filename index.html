@@ -519,10 +519,16 @@
             alert("No hay datos para exportar.");
             return;
         }
-        const dataToExport = filteredData.map(row => {
-            const {_row, ...rest} = row;
-            return rest;
-        });
+    const activasData = filteredData.filter(row => row['STATUS'] === 'ACTIVO');
+    
+    if(activasData.length === 0) {  
+        alert("No hay escuelas activas para exportar.");  
+        return;  
+    }  
+        const dataToExport = activasData.map(row => {  
+        const {_row, ...rest} = row;  
+        return rest;  
+    });
         const ws = XLSX.utils.json_to_sheet(dataToExport);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Escuelas");
