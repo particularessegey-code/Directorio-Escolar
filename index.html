@@ -420,12 +420,13 @@
         if(pageData.length === 0) {
             tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">No se encontraron escuelas.</td></tr>';
         } else {
-            pageData.forEach(row => {
+            pageData.forEach((row, localIndex) => {
+            const globalIndex = startIndex + localIndex;
                 // Verificamos si tiene URL de ubicación para habilitar/deshabilitar el botón
                 const hasLocation = row['UBICACION'] && row['UBICACION'].trim() !== '';
-                const locationBtn = hasLocation 
-                    ? `<button class="btn btn-sm btn-primary me-1" onclick='openLocation(${JSON.stringify(row)})' title="Ver Ubicación"><i class="bi bi-geo-alt-fill"></i></button>`
-                    : `<button class="btn btn-sm btn-secondary me-1" disabled title="Sin ubicación"><i class="bi bi-geo-alt-fill"></i></button>`;
+                const locationBtn = hasLocation   
+                      ? `<button class="btn btn-sm btn-primary me-1" onclick='openLocation(${globalIndex})' title="Ver Ubicación"><i class="bi bi-geo-alt-fill"></i></button>`   
+                       : `<button class="btn btn-sm btn-secondary me-1" disabled title="Sin ubicación"><i class="bi bi-geo-alt-fill"></i></button>`;
 
                 // Lógica para el enlace del Área
                 const areaVal = (row['AREA'] || '').toString().trim();
@@ -444,8 +445,8 @@
                         <td class="text-center"><span class="badge bg-${row['STATUS']==='ACTIVO'?'success':'danger'}">${row['STATUS']}</span></td>
                         <td class="text-center">
                             ${locationBtn}
-                            <button class="btn btn-sm btn-info text-white me-1" onclick='openViewModal(${JSON.stringify(row)})'><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-warning me-1" onclick='openEditModal(${JSON.stringify(row)})'><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-sm btn-info text-white me-1" onclick='openViewModal(${globalIndex})'><i class="bi bi-eye"></i></button>
+                            <button class="btn btn-sm btn-warning me-1" onclick='openEditModal(${globalIndex})'><i class="bi bi-pencil-square"></i></button>
                             ${currentUser.nivel === 'ADMIN' ? `<button class="btn btn-sm btn-danger" onclick="deleteSchool(${row._row}, ${row['NUM.']})"><i class="bi bi-trash"></i></button>` : ''}
                         </td>
                     </tr>
@@ -456,7 +457,8 @@
     }
 
     // FUNCIÓN PARA ABRIR EL MAPA DE LA ESCUELA
-    function openLocation(row) {
+    function openLocation(index) {
+        const row = filteredData[index];
         const url = row['UBICACION'];
         if (!url) return;
         
@@ -552,7 +554,8 @@
         new bootstrap.Modal(document.getElementById('schoolModal')).show();
     }
 
-    function openEditModal(row) {
+    function openEditModal(index) {
+        const row = filteredData[index];
         document.getElementById('modalTitle').innerText = 'Editar Escuela';
         document.getElementById('txtRow').value = row._row;
         document.getElementById('txtNum').value = row['NUM.'];
@@ -587,7 +590,8 @@
         new bootstrap.Modal(document.getElementById('schoolModal')).show();
     }
 
-    function openViewModal(row) {
+    function openViewModal(index) {
+        const row = filteredData[index];
         document.getElementById('modalTitle').innerText = 'Detalles de la Escuela';
         document.getElementById('txtRow').value = row._row;
         document.getElementById('txtNum').value = row['NUM.'];
