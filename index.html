@@ -360,16 +360,20 @@
            document.getElementById('btnRefresh').classList.add('d-none');  
            document.getElementById('filtersRow').classList.add('d-none');  
 }
-           // Notificaciones y Agregar: solo ADMIN
-         if(currentUser.nivel === 'ADMIN') {  
-          document.getElementById('notifContainer').classList.remove('d-none');  
+          // Agregar: todos menos CONSULTA
+         if(currentUser.nivel !== 'CONSULTA') {  
           document.getElementById('btnAgregar').classList.remove('d-none');  
-          checkNotifications();   
-          setInterval(checkNotifications, 60000);   
 } else {  
-          document.getElementById('notifContainer').classList.add('d-none');  
           document.getElementById('btnAgregar').classList.add('d-none');  
 }
+         // Notificaciones: solo ADMIN
+        if(currentUser.nivel === 'ADMIN') {  
+        document.getElementById('notifContainer').classList.remove('d-none');  
+         checkNotifications();   
+         setInterval(checkNotifications, 60000);   
+} else {  
+         document.getElementById('notifContainer').classList.add('d-none');  
+} 
             
 } else {
             document.getElementById('loginError').innerText = res.message;
@@ -521,7 +525,7 @@ function filterTable() {
                         <td class="text-center">  
                             ${locationBtn}  
                         <button class="btn btn-sm btn-info text-white me-1" onclick='openViewModal(${globalIndex})'><i class="bi bi-eye"></i></button>  
-                            ${currentUser.nivel === 'ADMIN' ? `<button class="btn btn-sm btn-warning me-1" onclick='openEditModal(${globalIndex})'><i class="bi bi-pencil-square"></i></button>` : ''}  
+                             ${currentUser.nivel !== 'CONSULTA' ? `<button class="btn btn-sm btn-warning me-1" onclick='openEditModal(${globalIndex})'><i class="bi bi-pencil-square"></i></button>` : ''}   
                             ${currentUser.nivel === 'ADMIN' ? `<button class="btn btn-sm btn-danger" onclick="deleteSchool(${row._row}, ${row['NUM.']})"><i class="bi bi-trash"></i></button>` : ''}  
                         </td>
                     </tr>
@@ -763,14 +767,19 @@ function filterTable() {
              document.getElementById('btnRefresh').classList.add('d-none');  
              document.getElementById('filtersRow').classList.add('d-none');  
 }
-           if(currentUser.nivel === 'ADMIN') {  
-             document.getElementById('notifContainer').classList.remove('d-none');  
-             document.getElementById('btnAgregar').classList.remove('d-none');  
-             checkNotifications();   
-             setInterval(checkNotifications, 60000);   
+           // Agregar: todos menos CONSULTA
+if(currentUser.nivel !== 'CONSULTA') {  
+    document.getElementById('btnAgregar').classList.remove('d-none');  
 } else {  
-             document.getElementById('notifContainer').classList.add('d-none');  
-             document.getElementById('btnAgregar').classList.add('d-none');  
+    document.getElementById('btnAgregar').classList.add('d-none');  
+}
+// Notificaciones: solo ADMIN
+if(currentUser.nivel === 'ADMIN') {  
+    document.getElementById('notifContainer').classList.remove('d-none');  
+    checkNotifications();   
+    setInterval(checkNotifications, 60000);   
+} else {  
+    document.getElementById('notifContainer').classList.add('d-none');  
 }
         }
     });
