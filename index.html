@@ -388,6 +388,12 @@
         document.getElementById('txtPass').type = 'password';
         document.getElementById('txtUser').value = '';
         document.getElementById('txtPass').value = '';
+
+        // Limpiar filtros al cerrar sesión
+        document.getElementById('searchInput').value = '';
+        document.getElementById('filterArea').value = '';
+        document.getElementById('filterNivel').value = '';
+        document.getElementById('filterStatus').value = '';
         
         // Ocultar elementos de Admin al cerrar sesión
         document.getElementById('notifContainer').classList.add('d-none');
@@ -596,25 +602,36 @@ function filterTable() {
     }
 
     function exportToExcel() {
-        if(filteredData.length === 0) {
-            alert("No hay datos para exportar.");
+    if(filteredData.length === 0) {
+        alert("No hay datos para exportar.");
+        return;
+    }
+
+    let dataToProcess;
+
+    // Si es ADMIN o CONSULTA, exporta todo lo que está en pantalla (Activos e Inactivos)
+    // Si es PREESCOLAR, PRIMARIA o SECUNDARIA, filtra solo las ACTIVO
+    if (currentUser.nivel === 'ADMIN' || currentUser.nivel === 'CONSULTA') {
+        dataToProcess = filteredData;
+    } else {
+        dataToProcess = filteredData.filter(row => row['STATUS'] === 'ACTIVO');
+
+        if(dataToProcess.length === 0) {
+            alert("No hay escuelas activas para exportar.");
             return;
         }
-    const activasData = filteredData.filter(row => row['STATUS'] === 'ACTIVO');
-    
-    if(activasData.length === 0) {  
-        alert("No hay escuelas activas para exportar.");  
-        return;  
-    }  
-        const dataToExport = activasData.map(row => {  
-        const {_row, ...rest} = row;  
-        return rest;  
-    });
-        const ws = XLSX.utils.json_to_sheet(dataToExport);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Escuelas");
-        XLSX.writeFile(wb, `Escuelas_${currentUser.nivel}.xlsx`);
     }
+
+    const dataToExport = dataToProcess.map(row => {
+        const {_row, ...rest} = row;
+        return rest;
+    });
+
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Escuelas");
+    XLSX.writeFile(wb, `Escuelas_${currentUser.nivel}.xlsx`);
+}
 
     function openCreateModal() {
         document.getElementById('modalTitle').innerText = 'Agregar Nueva Escuela';
