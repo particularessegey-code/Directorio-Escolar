@@ -718,6 +718,13 @@ function filterTable() {
     }
 
     async function saveSchool() {
+    const btn = document.getElementById('btnSaveModal');
+    if (btn.disabled) return; // guard extra por si acaso
+    btn.disabled = true;
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
+
+    try {
         const rowId = document.getElementById('txtRow').value;
         const payload = {
             username: currentUser.username,
@@ -743,30 +750,44 @@ function filterTable() {
                 'AREA': document.getElementById('txtArea').value,
                 'VISITADOR': document.getElementById('txtVisitador').value,
                 'OBSERVACIONES': document.getElementById('txtObservaciones').value,
-                'UBICACION': document.getElementById('txtUbicacion').value // Se envía el valor oculto para conservarlo
+                'UBICACION': document.getElementById('txtUbicacion').value
             }
         };
+
         const res = await apiRequest({}, 'POST', payload);
-        if(res.success) {
+        if (res.success) {
             bootstrap.Modal.getInstance(document.getElementById('schoolModal')).hide();
             refreshData();
             alert(res.message);
         } else {
             alert("Error: " + res.message);
         }
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = textoOriginal;
     }
+}
 
-    async function deleteSchool(rowId, numEscuela) {
-        if(!confirm(`¿Estás seguro de eliminar la escuela NUM ${numEscuela}?`)) return;
+    let eliminando = false; // guard global simple, ya que este botón no tiene id fijo por fila
+
+async function deleteSchool(rowId, numEscuela) {
+    if (eliminando) return;
+    if (!confirm(`¿Estás seguro de eliminar la escuela NUM ${numEscuela}?`)) return;
+
+    eliminando = true;
+    try {
         const payload = { username: currentUser.username, password: currentUser.pass, action: 'delete', row: rowId };
         const res = await apiRequest({}, 'POST', payload);
-        if(res.success) {
+        if (res.success) {
             refreshData();
             alert(res.message);
         } else {
             alert("Error: " + res.message);
         }
+    } finally {
+        eliminando = false;
     }
+}
 
         window.addEventListener('DOMContentLoaded', (event) => {
             initAreaFilter(); 
