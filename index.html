@@ -9,161 +9,200 @@
     <!-- Librería para exportar a Excel -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
         <style>
-  :root {
-    --app-bg: #f4f7f6;
-    --topbar-bg: #f4f7f6;
-    --thead-bg: #212529;
-    --thead-color: #ffffff;
-    --area-link: #0d6efd;
-    --area-link-hover: #0a58ca;
-  }
+    :root {
+        --app-bg: #f4f7f6;
+        --topbar-bg: #f4f7f6;
+        --thead-bg: #212529;
+        --thead-color: #ffffff;
+        --area-link: #0d6efd;
+        --area-link-hover: #0a58ca;
+    }
 
-  [data-bs-theme="dark"] {
-    --app-bg: #0f1115;
-    --topbar-bg: #0f1115;
-    --thead-bg: #1f2937;
-    --thead-color: #f8f9fa;
-    --area-link: #6ea8fe;
-    --area-link-hover: #3d8bfd;
-  }
+    [data-bs-theme="dark"] {
+        --app-bg: #0f1115;
+        --topbar-bg: #0f1115;
+        --thead-bg: #1f2937;
+        --thead-color: #f8f9fa;
+        --area-link: #6ea8fe;
+        --area-link-hover: #3d8bfd;
+    }
 
-  body {
-    background-color: var(--app-bg);
-    transition: background-color .2s ease, color .2s ease;
-  }
+    body {
+        background-color: var(--app-bg);
+        transition: background-color .2s ease, color .2s ease;
+    }
 
-  .login-container {
-    max-width: 400px;
-    margin: 100px auto;
-  }
+    .login-container {
+        max-width: 400px;
+        margin: 100px auto;
+    }
 
-  .area-link {
-    color: var(--area-link);
-    text-decoration: underline;
-    cursor: pointer;
-    font-weight: bold;
-  }
+    .area-link {
+        color: var(--area-link);
+        text-decoration: underline;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
-  .area-link:hover {
-    color: var(--area-link-hover);
-  }
+    .area-link:hover {
+        color: var(--area-link-hover);
+    }
 
-  /* Congelar la barra superior */
-  #topBar {
-    position: sticky;
-    top: 0;
-    z-index: 1020;
-    background-color: var(--topbar-bg);
-    padding-top: 1.5rem;
-    padding-bottom: 1rem;
-  }
+    /* Congelar la barra superior */
+    #topBar {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        background-color: var(--topbar-bg);
+        padding-top: 1.5rem;
+        padding-bottom: 1rem;
+    }
 
-  /* Scroll interno para la tabla */
-  .table-responsive {
-    max-height: 65vh;
-    overflow-y: auto;
-  }
+     /* Scroll interno para la tabla */
+    .table-responsive {
+        max-height: 65vh;
+        overflow-y: auto;
+    }
 
-  /* Encabezado de tabla fijo */
-  .table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1010;
-    background-color: var(--thead-bg) !important;
-    color: var(--thead-color) !important;
-  }
+    /* Encabezado de tabla fijo */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1010;
+        background-color: var(--thead-bg) !important;
+        color: var(--thead-color) !important;
+    }
 
-  /* Ajustes extra para modo oscuro */
-  [data-bs-theme="dark"] .card {
-    background-color: #151a21;
-    border-color: #26313f;
-  }
+     /* Ajustes extra para modo oscuro */
+    [data-bs-theme="dark"] .card {
+        background-color: #151a21;
+        border-color: #26313f;
+    }
 
-  [data-bs-theme="dark"] .table {
-    --bs-table-color: #e9ecef;
-    --bs-table-bg: #151a21;
-    --bs-table-border-color: #2b3643;
-    --bs-table-hover-bg: #1d2530;
-  }
+    [data-bs-theme="dark"] .table {
+        --bs-table-color: #e9ecef;
+        --bs-table-bg: #151a21;
+        --bs-table-border-color: #2b3643;
+        --bs-table-hover-bg: #1d2530;
+    }
 
-  [data-bs-theme="dark"] .form-control,
-  [data-bs-theme="dark"] .form-select {
-    background-color: #1b2330;
-    border-color: #303b4d;
-    color: #e9ecef;
-  }
+    [data-bs-theme="dark"] .form-control,
+    [data-bs-theme="dark"] .form-select {
+        background-color: #1b2330;
+        border-color: #303b4d;
+        color: #e9ecef;
+    }
 
-  [data-bs-theme="dark"] .btn-light {
-    background-color: #26313f;
-    border-color: #374457;
-    color: #e9ecef;
-  }
+    [data-bs-theme="dark"] .btn-light {
+        background-color: #26313f;
+        border-color: #374457;
+        color: #e9ecef;
+    }
 
-  [data-bs-theme="dark"] .text-muted {
-    color: #9aa6b2 !important;
-  }
+    [data-bs-theme="dark"] .text-muted {
+        color: #9aa6b2 !important;
+    }
 
-  [data-bs-theme="dark"] ::-webkit-scrollbar-track {
-    background: #151a21;
-  }
+    [data-bs-theme="dark"] ::-webkit-scrollbar-track {
+        background: #151a21;
+    }
 
-  [data-bs-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: #374457;
-    border-radius: 8px;
-  }
- /* Estilo mejorado para la columna COMPARTE */
-.comparte-chip {
-    display: inline-block;
-    background-color: #e9ecef; /* Gris muy claro para modo luz */
-    color: #495057;            /* Texto oscuro legible */
-    padding: 4px 10px;
-    border-radius: 20px;       /* Forma de píldora completa */
-    font-size: 0.85rem;
-    font-weight: 600;
-    min-width: 30px;
-    text-align: center;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); /* Borde sutil */
-}
+    [data-bs-theme="dark"] ::-webkit-scrollbar-thumb {
+        background: #374457;
+        border-radius: 8px;
+    }
+    /* Estilo mejorado para la columna COMPARTE */
+    .comparte-chip {
+        display: inline-block;
+        background-color: #e9ecef;
+        color: #495057;            
+        padding: 4px 10px;
+        border-radius: 20px;       
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 30px;
+        text-align: center;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+    }
 
-/* Variante para Modo Oscuro */
-[data-bs-theme="dark"] .comparte-chip {
-    background-color: #2c3540;
-    color: #adb5bd;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
-}
+    /* Variante para Modo Oscuro */
+    [data-bs-theme="dark"] .comparte-chip {
+        background-color: #2c3540;
+        color: #adb5bd;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
 
-/* Estado vacío: Solo un punto discreto o nada */
-.comparte-empty {
-    color: #ced4da;
-    font-size: 0.8rem;
-}
-[data-bs-theme="dark"] .comparte-empty {
-    color: #495057;
-}
+    /* Estado vacío: Solo un punto discreto o nada */
+    .comparte-empty {
+        color: #ced4da;
+        font-size: 0.8rem;
+    }
+    [data-bs-theme="dark"] .comparte-empty {
+        color: #495057;
+    }
+    /* Estilo normal del chip */
+    .comparte-chip {
+        display: inline-block;
+        background-color: #e9ecef;
+        color: #495057;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 30px;
+        text-align: center;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+    }
+
+     /* Estilo CUANDO ESTÁ SELECCIONADO (Activo) */
+    .comparte-chip-active {
+        display: inline-block;
+        background-color: #0d6efd !important; /* Azul Bootstrap primario */
+        color: white !important;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        min-width: 30px;
+        text-align: center;
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.3); /* Halo azul sutil */
+        transform: scale(1.05); /* Aumenta ligeramente para destacar */
+        cursor: pointer;
+    }
+
+    /* Hover para el activo */
+    .comparte-chip-active:hover {
+        background-color: #0b5ed7 !important;
+        transform: scale(1.1);
+    }
+
+    /* Modo Oscuro para el activo */
+    [data-bs-theme="dark"] .comparte-chip-active {
+        background-color: #3d8bfd !important;
+        color: #fff !important;
+    }
 </style>
 
 <script>
-(function () {
-  try {
-    const savedUser = sessionStorage.getItem('crudUser');
-    const savedTheme = localStorage.getItem('escuelas_theme');
-
-    if (savedUser && savedTheme === 'dark') {
-      const user = JSON.parse(savedUser);
-
-      if (user && (user.nivel === 'ADMIN' || user.nivel === 'CONSULTA')) {
-        document.documentElement.setAttribute('data-bs-theme', 'dark');
-      }
-    }
-  } catch (e) {}
-})();
+    (function () {
+        try {
+            const savedUser = sessionStorage.getItem('crudUser');
+            const savedTheme = localStorage.getItem('escuelas_theme');
+        if (savedUser && savedTheme === 'dark') {
+            const user = JSON.parse(savedUser);
+        if (user && (user.nivel === 'ADMIN' || user.nivel === 'CONSULTA')) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        }
+        }
+        } catch (e) {}
+    })();
 </script>
 
 
 </head>
 <body>
-
-<!-- LOGIN -->
+                                 <!-- LOGIN -->
 <div class="login-container card shadow-sm" id="loginScreen">
     <div class="card-body p-5">
         <h3 class="text-center mb-4">Control de Escuelas</h3>
@@ -172,8 +211,7 @@
         
         <div class="input-group mb-4">
             <input type="password" id="txtPass" class="form-control" placeholder="Contraseña" onkeypress="if(event.key==='Enter') login()">
-            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                <i class="bi bi-eye-slash" id="eyeIcon"></i>
+            <button class="btn btn-outline-secondary" type="button" id="togglePassword"><i class="bi bi-eye-slash" id="eyeIcon"></i>
             </button>
         </div>
 
@@ -184,81 +222,72 @@
     </div>
 </div>
 
-<!-- DASHBOARD -->
-<div class="container-fluid py-4 d-none" id="dashboardScreen">
-    
-    <!-- ENVOLVEMOS LA PARTE SUPERIOR EN topBar -->
+                                            <!-- DASHBOARD -->
+<div class="container-fluid py-4 d-none" id="dashboardScreen"> 
+        <!-- ENVOLVEMOS LA PARTE SUPERIOR EN topBar -->
     <div id="topBar">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-            <h3 class="mb-0">Escuelas - <span class="badge bg-secondary" id="lblNivel"></span></h3>
-                 <div class="d-flex align-items-center gap-2">
-                <!-- Campanita de notificaciones -->
-                <div class="dropdown d-none" id="notifContainer">
-                    <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-bell-fill"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end p-3 shadow" style="width: 350px; max-height: 300px; overflow-y: auto;" id="notifList">
-                        <li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>
-                    </ul>
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h3 class="mb-0">Escuelas - <span class="badge bg-secondary" id="lblNivel"></span></h3>
+                    <div class="d-flex align-items-center gap-2">
+                    <!-- Campanita de notificaciones -->
+                    <div class="dropdown d-none" id="notifContainer">
+                        <button class="btn btn-light position-relative" type="button" id="btnNotif" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell-fill"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end p-3 shadow" style="width: 350px; max-height: 300px; overflow-y: auto;" id="notifList">
+                            <li><h6 class="text-center text-muted">Sin notificaciones nuevas</h6></li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-success d-none" id="btnAgregar" onclick="openCreateModal()"><i class="bi bi-plus-circle"></i> Agregar</button>
+                    <button class="btn btn-info text-white" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Descargar Excel</button>
+                    <button class="btn btn-secondary d-none" id="btnRefresh" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
+                    <!-- BOTÓN MODO OSCURO (solo ADMIN) -->
+                    <button class="btn btn-outline-secondary d-none" id="btnDarkMode" type="button" onclick="toggleDarkMode()" title="Modo oscuro">
+                    <i class="bi bi-moon-stars-fill" id="darkModeIcon"></i></button>
+                    <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
                 </div>
-                <button class="btn btn-success d-none" id="btnAgregar" onclick="openCreateModal()"><i class="bi bi-plus-circle"></i> Agregar</button>
-                <button class="btn btn-info text-white" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Descargar Excel</button>
-                <button class="btn btn-secondary d-none" id="btnRefresh" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refrescar</button>
-                <!-- BOTÓN MODO OSCURO (solo ADMIN) -->
-                <button class="btn btn-outline-secondary d-none" id="btnDarkMode" type="button" onclick="toggleDarkMode()" title="Modo oscuro">
-                <i class="bi bi-moon-stars-fill" id="darkModeIcon"></i></button>
-                <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
             </div>
-        </div>
         
         <div class="card shadow-sm mb-0">
-    <div class="card-body">
-        <!-- FILTROS POR SELECT -->
-        <div class="row g-2 mb-3 d-none" id="filtersRow">
-            <div class="col-md-2">
-                <select id="filterArea" class="form-select form-select-sm" onchange="filterTable()">
-                    <option value="">Todas las Áreas</option>
-                </select>
+            <div class="card-body">
+                    <!-- FILTROS POR SELECT -->
+            <div class="row g-2 mb-3 d-none" id="filtersRow">
+                <div class="col-md-3">
+                    <select id="filterArea" class="form-select form-select-sm" onchange="filterTable()">
+                        <option value="">Todas las Áreas</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="filterNivel" class="form-select form-select-sm" onchange="filterTable()">
+                        <option value="">Todos los Niveles</option>
+                        <option value="PREESCOLAR">Preescolar</option>
+                        <option value="PRIMARIA">Primaria</option>
+                        <option value="SECUNDARIA">Secundaria</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="filterStatus" class="form-select form-select-sm" onchange="filterTable()">
+                        <option value="">Todos los Status</option>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-sm btn-outline-secondary w-100" onclick="clearFilters()">
+                        <i class="bi bi-x-circle"></i> Limpiar Filtros
+                    </button>
+                </div>
             </div>
-            <div class="col-md-2">
-                <select id="filterNivel" class="form-select form-select-sm" onchange="filterTable()">
-                    <option value="">Todos los Niveles</option>
-                    <option value="PREESCOLAR">Preescolar</option>
-                    <option value="PRIMARIA">Primaria</option>
-                    <option value="SECUNDARIA">Secundaria</option>
-                </select>
+                                        <!-- BUSCADOR DE TEXTO -->
+            <div class="d-flex justify-content-between align-items-center">
+                <input type="text" id="searchInput" class="form-control w-75" placeholder="Buscar por Nombre, Clave, Nivel..." onkeyup="filterTable()">
+                <span class="text-muted" id="lblCount">0 escuelas</span>
             </div>
-            <div class="col-md-2">
-                <select id="filterStatus" class="form-select form-select-sm" onchange="filterTable()">
-                    <option value="">Todos los Status</option>
-                    <option value="ACTIVO">Activo</option>
-                    <option value="INACTIVO">Inactivo</option>
-                </select>
-            </div>
-             <!-- NUEVO FILTRO COMPARTE -->
-    <div class="col-md-2">
-        <select id="filterComparte" class="form-select form-select-sm" onchange="filterTable()">
-            <option value="">Todos los Grupos</option>
-            <!-- Las opciones se llenarán dinámicamente con JS -->
-        </select>
-    </div>
-            <div class="col-md-2">
-                <button class="btn btn-sm btn-outline-secondary w-100" onclick="clearFilters()">
-                    <i class="bi bi-x-circle"></i> Limpiar Filtros
-                </button>
             </div>
         </div>
-        <!-- BUSCADOR DE TEXTO -->
-        <div class="d-flex justify-content-between align-items-center">
-            <input type="text" id="searchInput" class="form-control w-75" placeholder="Buscar por Nombre, Clave, Nivel..." onkeyup="filterTable()">
-            <span class="text-muted" id="lblCount">0 escuelas</span>
-        </div>
     </div>
-</div>
-    </div>
-    <!-- FIN DE topBar -->
-
+                <!-- FIN DE topBar -->
     <!-- A la tarjeta de la tabla le puse un margen superior mt-3 para separarla -->
     <div class="card shadow-sm mt-3">
         <div class="card-body">
@@ -296,42 +325,41 @@
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="modalTitle">Escuela</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-            <input type="hidden" id="txtRow">
-            <input type="hidden" id="txtUbicacion"> <!-- Campo oculto para preservar la URL al editar -->
-            <div class="row g-3">
-            <div class="col-md-1"><label for="txtNum">NUM</label><input type="text" id="txtNum" class="form-control" readonly></div>
-            <div class="col-md-2"><label for="txtClave">CLAVE C.C.T.</label><input type="text" id="txtClave" class="form-control"></div>
-            <div class="col-md-5"><label for="txtNombre">NOMBRE ESCUELA</label><input type="text" id="txtNombre" class="form-control"></div>
-            <div class="col-md-2"><label for="txtNivel">NIVEL</label><input type="text" id="txtNivel" class="form-control"></div>
-            <div class="col-md-2"><label for="txtTurno">TURNO</label><select id="txtTurno" class="form-control">
-            <option value="MATUTINO">MATUTINO</option><option value="VESPERTINO">VESPERTINO</option>
-            </select></div>
-            <div class="col-md-3"><label for="txtMunicipio">MUNICIPIO</label><input type="text" id="txtMunicipio" class="form-control"></div>
-            <div class="col-md-3"><label for="txtLocalidad">LOCALIDAD</label><input type="text" id="txtLocalidad" class="form-control"></div>
-            <div class="col-md-6"><label for="txtDireccion">DIRECCION</label><input type="text" id="txtDireccion" class="form-control"></div>
-            <div class="col-md-4"><label for="txtRepresentante">REPRESENTANTE LEGAL</label><input type="text" id="txtRepresentante" class="form-control"></div>
-            <div class="col-md-4"><label for="txtTelefonos">TELEFONOS</label><input type="text" id="txtTelefonos" class="form-control"></div>
-            <div class="col-md-4"><label for="txtCorreo">CORREO ELECTRONICO</label><input type="email" id="txtCorreo" class="form-control"></div>
-                
-            <div class="col-md-3"><label for="txtAcuerdo">ACUERDO(S)</label><input type="text" id="txtAcuerdo" class="form-control" placeholder="Ej. 123/456"></div>
-            <div class="col-md-3"><label for="txtFechaAcuerdo">FECHA DE ACUERDO(S)</label><input type="text" id="txtFechaAcuerdo" class="form-control" placeholder="Ej. 12/10/2023 / 15/06/2024"></div>
-            <div class="col-md-2"><label for="txtTotalAcuerdos">TOTAL ACUERDOS</label><input type="number" id="txtTotalAcuerdos" class="form-control"></div>
-            <div class="col-md-2"><label for="txtStatus">STATUS</label><select id="txtStatus" class="form-control">
-            <option value="ACTIVO">ACTIVO</option><option value="INACTIVO">INACTIVO</option>
-            </select></div>
-            <div class="col-md-2"><label for="txtArea">AREA</label><input type="text" id="txtArea" class="form-control"></div>
-            <div class="col-md-3"><label for="txtVisitador">VISITADOR</label><input type="text" id="txtVisitador" class="form-control"></div>
-            <div class="col-md-3"><label for="txtPersonaMF">PERSONA M-F</label><select id="txtPersonaMF" class="form-control">
-            <option value="">Seleccionar...</option><option value="MORAL">Moral</option><option value="FISICA">Física</option>
-            </select></div>
-            <div class="col-md-6"><label for="txtObservaciones">OBSERVACIONES</label><input type="text" id="txtObservaciones" class="form-control"></div>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="btnSaveModal" onclick="saveSchool()">Guardar Cambios</button>
+    </div>
+        <div class="modal-body">
+        <input type="hidden" id="txtRow">
+        <input type="hidden" id="txtUbicacion"> <!-- Campo oculto para preservar la URL al editar -->
+        <div class="row g-3">
+        <div class="col-md-1"><label for="txtNum">NUM</label><input type="text" id="txtNum" class="form-control" readonly></div>
+        <div class="col-md-2"><label for="txtClave">CLAVE C.C.T.</label><input type="text" id="txtClave" class="form-control"></div>
+        <div class="col-md-5"><label for="txtNombre">NOMBRE ESCUELA</label><input type="text" id="txtNombre" class="form-control"></div>
+        <div class="col-md-2"><label for="txtNivel">NIVEL</label><input type="text" id="txtNivel" class="form-control"></div>
+        <div class="col-md-2"><label for="txtTurno">TURNO</label><select id="txtTurno" class="form-control">
+        <option value="MATUTINO">MATUTINO</option><option value="VESPERTINO">VESPERTINO</option>
+        </select></div>
+        <div class="col-md-3"><label for="txtMunicipio">MUNICIPIO</label><input type="text" id="txtMunicipio" class="form-control"></div>
+        <div class="col-md-3"><label for="txtLocalidad">LOCALIDAD</label><input type="text" id="txtLocalidad" class="form-control"></div>
+        <div class="col-md-6"><label for="txtDireccion">DIRECCION</label><input type="text" id="txtDireccion" class="form-control"></div>
+        <div class="col-md-4"><label for="txtRepresentante">REPRESENTANTE LEGAL</label><input type="text" id="txtRepresentante" class="form-control"></div>
+        <div class="col-md-4"><label for="txtTelefonos">TELEFONOS</label><input type="text" id="txtTelefonos" class="form-control"></div>
+        <div class="col-md-4"><label for="txtCorreo">CORREO ELECTRONICO</label><input type="email" id="txtCorreo" class="form-control"></div>   
+        <div class="col-md-3"><label for="txtAcuerdo">ACUERDO(S)</label><input type="text" id="txtAcuerdo" class="form-control" placeholder="Ej. 123/456"></div>
+        <div class="col-md-3"><label for="txtFechaAcuerdo">FECHA DE ACUERDO(S)</label><input type="text" id="txtFechaAcuerdo" class="form-control" placeholder="Ej. 12/10/2023 / 15/06/2024"></div>
+        <div class="col-md-2"><label for="txtTotalAcuerdos">TOTAL ACUERDOS</label><input type="number" id="txtTotalAcuerdos" class="form-control"></div>
+        <div class="col-md-2"><label for="txtStatus">STATUS</label><select id="txtStatus" class="form-control">
+        <option value="ACTIVO">ACTIVO</option><option value="INACTIVO">INACTIVO</option>
+        </select></div>
+        <div class="col-md-2"><label for="txtArea">AREA</label><input type="text" id="txtArea" class="form-control"></div>
+        <div class="col-md-3"><label for="txtVisitador">VISITADOR</label><input type="text" id="txtVisitador" class="form-control"></div>
+        <div class="col-md-3"><label for="txtPersonaMF">PERSONA M-F</label><select id="txtPersonaMF" class="form-control">
+        <option value="">Seleccionar...</option><option value="MORAL">Moral</option><option value="FISICA">Física</option>
+        </select></div>
+        <div class="col-md-6"><label for="txtObservaciones">OBSERVACIONES</label><input type="text" id="txtObservaciones" class="form-control"></div>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnSaveModal" onclick="saveSchool()">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -362,6 +390,7 @@
         let currentUser = null;
         let currentData = [];
         let filteredData = [];
+        let activeGroupFilter = ''; 
         const THEME_STORAGE_KEY = 'escuelas_theme';
 
     function getSavedTheme() {
@@ -614,9 +643,7 @@
             document.getElementById('filterArea').value = '';
             document.getElementById('filterNivel').value = '';
             document.getElementById('filterStatus').value = '';
-        if(document.getElementById('filterComparte')) {                    // Por si agregaste el filtro nuevo
-            document.getElementById('filterComparte').value = ''; 
-        }
+            activeGroupFilter = '';
             // 5. Ocultar elementos específicos de Admin/Consulta
             document.getElementById('notifContainer').classList.add('d-none');
             document.getElementById('btnRefresh').classList.add('d-none');
@@ -633,312 +660,254 @@
     async function loadData() {
         const res = await apiRequest({ action: 'read', username: currentUser.username, password: currentUser.pass });
         if(res.success) {
-            currentData = res.data;
-            populateComparteFilter(); 
+            currentData = res.data; 
             document.getElementById('searchInput').value = '';
-            filterTable(); 
+            activeGroupFilter = '';
+            filterTable();
+            updateClearButtonState(); 
         } else {
             alert("Error al cargar datos: " + res.message);
         }
     }
 
         // Refresca datos sin perder filtros ni página
-async function refreshData() {
-    const res = await apiRequest({ action: 'read', username: currentUser.username, password: currentUser.pass });
-    if (res.success) {
-        currentData = res.data;
-        applyFilters(false);
-    } else {
-        alert("Error al cargar datos: " + res.message);
+    async function refreshData() {
+        const res = await apiRequest({ action: 'read', username: currentUser.username, password: currentUser.pass });
+        if (res.success) {
+            currentData = res.data;
+            applyFilters(false);
+        } else {
+            alert("Error al cargar datos: " + res.message);
+        }
     }
-}
 
 // Limpiar todos los filtros de golpe
-function clearFilters() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('filterArea').value = '';
-    document.getElementById('filterNivel').value = '';
-    document.getElementById('filterStatus').value = '';
-    document.getElementById('filterComparte').value = '';
-    filterTable();
-}
+    function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterArea').value = '';
+            document.getElementById('filterNivel').value = '';
+            document.getElementById('filterStatus').value = '';
+            activeGroupFilter = '';
+            filterTable();
+    }
+
+         //* Verifica si hay algún filtro activo y cambia el estilo del botón "Limpiar Filtros".
+    function updateClearButtonState() {
+            const btnClear = document.querySelector('#filtersRow button');
+        if (!btnClear) return; // Seguridad
+            const hasSearch = document.getElementById('searchInput').value.trim() !== '';
+            const hasArea = document.getElementById('filterArea').value !== '';
+            const hasNivel = document.getElementById('filterNivel').value !== '';
+            const hasStatus = document.getElementById('filterStatus').value !== '';
+            const hasGroup = activeGroupFilter !== ''; 
+            const isFiltered = hasSearch || hasArea || hasNivel || hasStatus || hasGroup;
+        if (isFiltered) {
+            btnClear.classList.remove('btn-outline-secondary');
+            btnClear.classList.add('btn-danger'); // Rojo intenso
+            btnClear.innerHTML = '<i class="bi bi-x-circle-fill"></i> Limpiar Filtros Activos';
+        } else {
+            btnClear.classList.remove('btn-danger');
+            btnClear.classList.add('btn-outline-secondary');
+            btnClear.innerHTML = '<i class="bi bi-x-circle"></i> Limpiar Filtros';
+        }
+    }
 
     function normalizeString(str) {
-        return str.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return str.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
     function initAreaFilter() {
-    const select = document.getElementById('filterArea');
-    for (let i = 1; i <= 26; i++) {
-        const option = document.createElement('option');
-        option.value = i.toString();
-        option.textContent = 'Área ' + i;
-        select.appendChild(option);
-    }
-}
-function populateComparteFilter() {
-    const select = document.getElementById('filterComparte');
-    // Guardamos selección previa
-    const currentValue = select.value; 
-    
-    // Limpiamos opciones excepto la primera ("Todos")
-    while(select.options.length > 1) {
-        select.remove(1);
-    }
-
-    // Extraemos valores únicos tratando null/undefined/vacío como "SIN GRUPO"
-    const uniqueValues = new Set();
-    
-    currentData.forEach(row => {
-        let val = row['COMPARTE'];
-        
-        // Normalizamos: Si es null, undefined o string vacío, lo marcamos especial
-        if (val === null || val === undefined || String(val).trim() === '') {
-            uniqueValues.add('__EMPTY__'); // Marcador interno para "vacío"
-        } else {
-            // Convertimos a string para evitar problemas de tipo (número vs texto)
-            uniqueValues.add(String(val).trim());
+            const select = document.getElementById('filterArea');
+        for (let i = 1; i <= 26; i++) {
+            const option = document.createElement('option');
+            option.value = i.toString();
+            option.textContent = 'Área ' + i;
+            select.appendChild(option);
         }
-    });
-
-    // Ordenamos numéricamente los grupos reales primero
-    const sortedGroups = [...uniqueValues]
-        .filter(v => v !== '__EMPTY__') // Quitamos el marcador temporal para ordenar
-        .sort((a, b) => {
-            const numA = parseFloat(a);
-            const numB = parseFloat(b);
-            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-            return String(a).localeCompare(String(b));
-        });
-
-    // Agregamos los grupos numéricos/textuales
-    sortedGroups.forEach(val => {
-        const option = document.createElement('option');
-        option.value = val;
-        option.textContent = 'Grupo #' + val; 
-        select.appendChild(option);
-    });
-
-    // AGREGAMOS LA OPCIÓN ESPECIAL PARA LAS QUE NO COMPARTEN
-    if (uniqueValues.has('__EMPTY__')) {
-        const emptyOption = document.createElement('option');
-        emptyOption.value = '__EMPTY__';
-        emptyOption.textContent = '(Sin Grupo / Mono-nivel)';
-        select.appendChild(emptyOption);
     }
 
-    // Restaurar selección si existía
-    if ([...select.options].some(opt => opt.value === currentValue)) {
-        select.value = currentValue;
-    }
-}
-
-    // Función central que aplica TODOS los filtros a la vez
-    // Función central que aplica TODOS los filtros a la vez
-function applyFilters(resetPage = true) {
-    const searchTerm = normalizeString(document.getElementById('searchInput').value);
-    const filterArea = document.getElementById('filterArea').value;
-    const filterNivel = document.getElementById('filterNivel').value.toUpperCase();
-    const filterStatus = document.getElementById('filterStatus').value.toUpperCase();
-    
-    // ⚠️ IMPORTANTE: Declaramos filterComparte UNA SOLA VEZ aquí afuera
-    const filterComparte = document.getElementById('filterComparte') ? document.getElementById('filterComparte').value : ''; 
-
-    filteredData = currentData.filter(row => {
-        // 1. Filtro de texto general
-        const nombre = normalizeString(row['NOMBRE ESCUELA'] || '');
-        const clave = normalizeString(row['CLAVE C.C.T.'] || '');
-        const nivel = normalizeString(row['NIVEL'] || '');
-        const matchText = nombre.includes(searchTerm) || clave.includes(searchTerm) || nivel.includes(searchTerm);
-
-        // 2. Filtro de área
-        const area = (row['AREA'] || '').toString().trim();
-        const matchArea = filterArea === '' || area === filterArea;
-
-        // 3. Filtro de nivel (mejorado para multinivel)
-        const rowNivelStr = (row['NIVEL'] || '').toString().trim().toUpperCase();
-        let matchNivel = false;
+    function applyFilters(resetPage = true) {
+            const searchTerm = normalizeString(document.getElementById('searchInput').value);
+            const filterArea = document.getElementById('filterArea').value;
+            const filterNivel = document.getElementById('filterNivel').value.toUpperCase();
+            const filterStatus = document.getElementById('filterStatus').value.toUpperCase();
+            const filterComparte = activeGroupFilter; 
+            filteredData = currentData.filter(row => {
+            const nombre = normalizeString(row['NOMBRE ESCUELA'] || '');
+            const clave = normalizeString(row['CLAVE C.C.T.'] || '');
+            const nivel = normalizeString(row['NIVEL'] || '');
+            const matchText = nombre.includes(searchTerm) || clave.includes(searchTerm) || nivel.includes(searchTerm);
+            const area = (row['AREA'] || '').toString().trim();
+            const matchArea = filterArea === '' || area === filterArea;
+            const rowNivelStr = (row['NIVEL'] || '').toString().trim().toUpperCase();
+            let matchNivel = false;
         if (filterNivel === '') {
             matchNivel = true;
         } else {
             matchNivel = rowNivelStr.includes(filterNivel);
         }
-
-        // 4. Filtro de status
-        const status = (row['STATUS'] || '').toString().trim().toUpperCase();
-        const matchStatus = filterStatus === '' || status === filterStatus;
-
-        // 5. Filtro de COMPARTE
-        // Usamos la variable externa 'filterComparte' definida arriba
-        const rawVal = row['COMPARTE'];
-        let rowValNormalized = '';
-        
-        if (rawVal === null || rawVal === undefined || String(rawVal).trim() === '') {
+            const status = (row['STATUS'] || '').toString().trim().toUpperCase();
+            const matchStatus = filterStatus === '' || status === filterStatus;
+            const rawVal = row['COMPARTE'];
+            let rowValNormalized = '';
+            if (rawVal === null || rawVal === undefined || String(rawVal).trim() === '') {
             rowValNormalized = '__EMPTY__';
         } else {
             rowValNormalized = String(rawVal).trim();
         }
-
-        let matchComparte = true;
+            let matchComparte = true;
         if (filterComparte !== '') {
             matchComparte = (rowValNormalized === filterComparte);
         }
-
-        // Retornar si cumple TODAS las condiciones
-        return matchText && matchArea && matchNivel && matchStatus && matchComparte;
-    }); // Fin del .filter()
-
-    if (resetPage) currentPage = 1;
-    
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    if (currentPage > totalPages) {
-        currentPage = totalPages > 0 ? totalPages : 1;
+            return matchText && matchArea && matchNivel && matchStatus && matchComparte;
+        });
+        if (resetPage) currentPage = 1;
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        if (currentPage > totalPages) {
+            currentPage = totalPages > 0 ? totalPages : 1;
+        }
+            renderTable();
+            updateClearButtonState(); 
     }
-    
-    renderTable();
-} // Fin de la función applyFilters
 
-// La llama el buscador y los selects
 function filterTable() {
     applyFilters(true);
 }
-    function renderTable() {
-    const tbody = document.getElementById('tblData');
-    tbody.innerHTML = '';
-    
-    const totalItems = filteredData.length;
-    const totalPages = Math.ceil(totalItems / rowsPerPage);
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const pageData = filteredData.slice(startIndex, endIndex);
-    
-    document.getElementById('lblCount').innerText = `${totalItems} escuelas encontradas`;
 
-    const showComparte = (currentUser.nivel === 'ADMIN' || currentUser.nivel === 'CONSULTA');
-    const colspanValue = showComparte ? 10 : 9; // 9 base + 1 comparte
-
-    if(pageData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${colspanValue}" class="text-center text-danger py-4">No se encontraron escuelas.</td></tr>`;
-        return; // Salir temprano si no hay datos
+    function toggleGroupFilter(groupValue) {
+        if (activeGroupFilter === groupValue) {
+            activeGroupFilter = '';
+        } else {
+            activeGroupFilter = groupValue;
+            document.getElementById('searchInput').value = ''; 
+        }
+            currentPage = 1;
+            applyFilters(false);
     }
 
-    pageData.forEach((row, localIndex) => {
-        const globalIndex = startIndex + localIndex;
-        
-        // Botón de Ubicación Individual
-        const hasLocation = row['UBICACION'] && String(row['UBICACION']).trim() !== '';
-        const locationBtnHtml = hasLocation   
+    function renderTable() {
+            const tbody = document.getElementById('tblData');
+            tbody.innerHTML = '';
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / rowsPerPage);
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
+            document.getElementById('lblCount').innerText = `${totalItems} escuelas encontradas`;
+            const showComparte = (currentUser.nivel === 'ADMIN' || currentUser.nivel === 'CONSULTA');
+            const colspanValue = showComparte ? 10 : 9; // 9 base + 1 comparte
+        if(pageData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="${colspanValue}" class="text-center text-danger py-4">No se encontraron escuelas.</td></tr>`;
+            return; // Salir temprano si no hay datos
+        }
+        pageData.forEach((row, localIndex) => {
+            const globalIndex = startIndex + localIndex;
+            const hasLocation = row['UBICACION'] && String(row['UBICACION']).trim() !== '';
+            const locationBtnHtml = hasLocation   
             ? `<button class="btn btn-sm btn-primary me-1" onclick='openLocation(${globalIndex})' title="Ver Ubicación"><i class="bi bi-geo-alt-fill"></i></button>`   
             : `<button class="btn btn-sm btn-secondary me-1" disabled title="Sin ubicación"><i class="bi bi-geo-alt-fill"></i></button>`;
-
-        // Enlace de Área (Click abre mapa general)
-        const areaVal = (row['AREA'] || '').toString().trim();
-        const areaHtml = AREA_MAPS[areaVal] 
+            const areaVal = (row['AREA'] || '').toString().trim();
+            const areaHtml = AREA_MAPS[areaVal] 
             ? `<span class="area-link" onclick="openAreaMap('${areaVal}')">${row['AREA']}</span>` 
             : row['AREA'];
-
-        // Procesamiento PERSONA M-F
-        let personaMFDisplay = '-';
+            let personaMFDisplay = '-';
         if (row['PERSONA M-F']) {
             const val = String(row['PERSONA M-F']).toUpperCase().trim();
             if (val.includes('MORAL')) personaMFDisplay = 'Moral';
             else if (val.includes('FISICA') || val.includes('FÍSICA')) personaMFDisplay = 'Física';
             else personaMFDisplay = row['PERSONA M-F']; 
         }
-
-        // Construcción de la fila
-        let trHtml = `
-            <tr>
-                <td class="text-center">${row['NUM.'] || ''}</td>
-                <td>${row['CLAVE C.C.T.'] || ''}</td>
-                <td><strong>${row['NOMBRE ESCUELA'] || ''}</strong></td>
-                <td>${row['TURNO'] || ''}</td>
-                <td>${row['MUNICIPIO'] || ''}</td>
-                <td class="text-center">${areaHtml}</td>
-                <td class="text-center align-middle fw-bold small">${personaMFDisplay}</td>
-        `;
-
-        // Columna Comparte (Solo Admin/Consulta)
+            let trHtml = `
+                <tr>
+                    <td class="text-center">${row['NUM.'] || ''}</td>
+                    <td>${row['CLAVE C.C.T.'] || ''}</td>
+                    <td><strong>${row['NOMBRE ESCUELA'] || ''}</strong></td>
+                    <td>${row['TURNO'] || ''}</td>
+                    <td>${row['MUNICIPIO'] || ''}</td>
+                    <td class="text-center">${areaHtml}</td>
+                    <td class="text-center align-middle fw-bold small">${personaMFDisplay}</td>
+                    `;
         if (showComparte) {
-            const rawVal = row['COMPARTE'];
-            if (rawVal !== null && rawVal !== undefined && String(rawVal).trim() !== '') {
-                trHtml += `<td class="text-center align-middle"><span class="comparte-chip">#${rawVal}</span></td>`;
-            } else {
+                const rawVal = row['COMPARTE'];
+        if (rawVal !== null && rawVal !== undefined && String(rawVal).trim() !== '') {
+                const groupVal = String(rawVal).trim();
+                const isActive = (activeGroupFilter === groupVal);
+                const chipClass = isActive ? 'comparte-chip-active' : 'comparte-chip';
+                trHtml += `<td class="text-center align-middle">
+                    <span class="${chipClass}" 
+                        style="cursor:pointer;" 
+                        title="Filtrar por Grupo ${groupVal}"
+                        onclick="toggleGroupFilter('${groupVal}')">
+                    #${groupVal}
+                </span>
+                </td>`;
+        } else {
                 trHtml += `<td class="text-center align-middle"></td>`;
-            }
         }
+        }
+            trHtml += `
+                    <td class="text-center"><span class="badge bg-${row['STATUS']==='ACTIVO'?'success':'danger'}">${row['STATUS'] || ''}</span></td>
+                    <td class="text-center whitespace-nowrap">  
+                        ${locationBtnHtml}
+                        <button class="btn btn-sm btn-info text-white me-1" onclick='openViewModal(${globalIndex})'><i class="bi bi-eye"></i></button>  
+                        ${currentUser.nivel !== 'CONSULTA' ? `<button class="btn btn-sm btn-warning me-1" onclick='openEditModal(${globalIndex})'><i class="bi bi-pencil-square"></i></button>` : ''}   
+                        ${currentUser.nivel === 'ADMIN' ? `<button class="btn btn-sm btn-danger" onclick="deleteSchool(${row._row}, '${row['NUM.']}')" ><i class="bi bi-trash"></i></button>` : ''}  
+                    </td>
+                </tr>
+            `;
 
-        // Status y Acciones
-        trHtml += `
-                <td class="text-center"><span class="badge bg-${row['STATUS']==='ACTIVO'?'success':'danger'}">${row['STATUS'] || ''}</span></td>
-                <td class="text-center whitespace-nowrap">  
-                    ${locationBtnHtml}
-                    <button class="btn btn-sm btn-info text-white me-1" onclick='openViewModal(${globalIndex})'><i class="bi bi-eye"></i></button>  
-                     ${currentUser.nivel !== 'CONSULTA' ? `<button class="btn btn-sm btn-warning me-1" onclick='openEditModal(${globalIndex})'><i class="bi bi-pencil-square"></i></button>` : ''}   
-                     ${currentUser.nivel === 'ADMIN' ? `<button class="btn btn-sm btn-danger" onclick="deleteSchool(${row._row}, '${row['NUM.']}')" ><i class="bi bi-trash"></i></button>` : ''}  
-                </td>
-            </tr>
-        `;
-
-        tbody.innerHTML += trHtml;
-    });
+            tbody.innerHTML += trHtml;
+        });
     
-    renderPagination(totalPages);
-}
+            renderPagination(totalPages);
+    }
 
     // FUNCIÓN PARA ABRIR EL MAPA DE LA ESCUELA
     function openLocation(index) {
-        const row = filteredData[index];
-        const url = row['UBICACION'];
+            const row = filteredData[index];
+            const url = row['UBICACION'];
         if (!url) return;
-        
-        let embedUrl = url;
+            let embedUrl = url;
         if (!url.includes('output=embed')) {
             embedUrl += (url.includes('?') ? '&' : '?') + 'output=embed';
         }
-
-        document.getElementById('mapFrame').src = embedUrl;
-        document.getElementById('mapLink').href = url;
-        // AQUÍ AGREGAMOS EL NOMBRE DE LA ESCUELA AL TÍTULO
-        document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Ubicación de: ${row['NOMBRE ESCUELA']}`;
-        new bootstrap.Modal(document.getElementById('mapModal')).show();
+            document.getElementById('mapFrame').src = embedUrl;
+            document.getElementById('mapLink').href = url;
+            document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Ubicación de: ${row['NOMBRE ESCUELA']}`;
+            new bootstrap.Modal(document.getElementById('mapModal')).show();
     }
 
     // NUEVA FUNCIÓN PARA ABRIR EL MAPA DEL ÁREA
     function openAreaMap(area) {
-        const url = AREA_MAPS[area];
+            const url = AREA_MAPS[area];
         if (!url) return;
-        
-        // Extraer el ID (mid) de la URL de Google My Maps para poder embeberlo
-        const midMatch = url.match(/mid=([^&]+)/);
+            const midMatch = url.match(/mid=([^&]+)/);
         if (!midMatch) return alert("Error al procesar el mapa del área.");
-        
-        const embedUrl = `https://www.google.com/maps/d/embed?mid=${midMatch[1]}`;
-        
-        document.getElementById('mapFrame').src = embedUrl;
-        document.getElementById('mapLink').href = url; // El botón abre el editor completo
-        document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Mapa del Área ${area}`;
-        new bootstrap.Modal(document.getElementById('mapModal')).show();
+            const embedUrl = `https://www.google.com/maps/d/embed?mid=${midMatch[1]}`;
+            document.getElementById('mapFrame').src = embedUrl;
+            document.getElementById('mapLink').href = url; // El botón abre el editor completo
+            document.getElementById('mapModalTitle').innerHTML = `<i class="bi bi-geo-alt-fill"></i> Mapa del Área ${area}`;
+            new bootstrap.Modal(document.getElementById('mapModal')).show();
     }
 
     function renderPagination(totalPages) {
-        const paginationEl = document.getElementById('pagination');
-        paginationEl.innerHTML = '';
+            const paginationEl = document.getElementById('pagination');
+            paginationEl.innerHTML = '';
         if (totalPages <= 1) return;
-        paginationEl.innerHTML += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Anterior</a></li>`;
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, currentPage + 2);
+            paginationEl.innerHTML += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Anterior</a></li>`;
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
         if(startPage > 1) paginationEl.innerHTML += `<li class="page-item disabled"><a class="page-link" href="#">...</a></li>`;
         for (let i = startPage; i <= endPage; i++) {
-            paginationEl.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`;
+                paginationEl.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`;
         }
         if(endPage < totalPages) paginationEl.innerHTML += `<li class="page-item disabled"><a class="page-link" href="#">...</a></li>`;
         paginationEl.innerHTML += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Siguiente</a></li>`;
     }
 
     function changePage(page) {
-        event.preventDefault();
-        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            event.preventDefault();
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
         if (page >= 1 && page <= totalPages) {
             currentPage = page;
             renderTable();
@@ -947,170 +916,123 @@ function filterTable() {
     }
 
     function exportToExcel() {
-    if(filteredData.length === 0) {
-        alert("No hay datos para exportar.");
-        return;
-    }
-
-    let dataToProcess;
-
-    // Si es ADMIN o CONSULTA, exporta todo lo que está en pantalla (Activos e Inactivos)
-    // Si es PREESCOLAR, PRIMARIA o SECUNDARIA, filtra solo las ACTIVO
-    if (currentUser.nivel === 'ADMIN' || currentUser.nivel === 'CONSULTA') {
-        dataToProcess = filteredData;
-    } else {
-        dataToProcess = filteredData.filter(row => row['STATUS'] === 'ACTIVO');
-
+        if(filteredData.length === 0) {
+            alert("No hay datos para exportar.");
+            return;
+        }
+            let dataToProcess;
+        if (currentUser.nivel === 'ADMIN' || currentUser.nivel === 'CONSULTA') {
+            dataToProcess = filteredData;
+        } else {
+            dataToProcess = filteredData.filter(row => row['STATUS'] === 'ACTIVO');
         if(dataToProcess.length === 0) {
             alert("No hay escuelas activas para exportar.");
             return;
         }
+        }
+            const dataToExport = dataToProcess.map(row => {
+            const {_row, ...rest} = row;
+            return rest;
+        });
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Escuelas");
+            XLSX.writeFile(wb, `Escuelas_${currentUser.nivel}.xlsx`);
     }
 
-    const dataToExport = dataToProcess.map(row => {
-        const {_row, ...rest} = row;
-        return rest;
-    });
-
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Escuelas");
-    XLSX.writeFile(wb, `Escuelas_${currentUser.nivel}.xlsx`);
-}
-/**
- * Limpia TODOS los campos del modal de escuelas.
- * Se usa antes de abrir el modal en modo CREAR para evitar datos residuales.
- */
-function clearModalFields() {
-    // Limpiar inputs de texto, email, number, password
-    document.querySelectorAll('#schoolModal input[type="text"], #schoolModal input[type="email"], #schoolModal input[type="number"]').forEach(input => {
-        input.value = '';
-        input.readOnly = false; // Asegurar que sea editable
-        input.disabled = false;
-    });
-
-    // Limpiar selects
-    document.querySelectorAll('#schoolModal select').forEach(select => {
-        select.selectedIndex = 0; // Volver a la primera opción
-        select.disabled = false;
-    });
-
-    // Limpiar inputs ocultos específicos
-    const txtRow = document.getElementById('txtRow');
-    if (txtRow) txtRow.value = '';
-
-    const txtUbicacion = document.getElementById('txtUbicacion');
-    if (txtUbicacion) txtUbicacion.value = '';
-
-    // Resetear NUM a 'Auto'
-    const txtNum = document.getElementById('txtNum');
-    if (txtNum) {
-        txtNum.value = 'Auto';
-        txtNum.readOnly = true; // NUM siempre es readonly en creación
+    function clearModalFields() {
+        document.querySelectorAll('#schoolModal input[type="text"], #schoolModal input[type="email"], #schoolModal input[type="number"]').forEach(input => {
+            input.value = '';
+            input.readOnly = false; // Asegurar que sea editable
+            input.disabled = false;
+        });
+        document.querySelectorAll('#schoolModal select').forEach(select => {
+            select.selectedIndex = 0; // Volver a la primera opción
+            select.disabled = false;
+        });
+            const txtRow = document.getElementById('txtRow');
+        if (txtRow) txtRow.value = '';
+            const txtUbicacion = document.getElementById('txtUbicacion');
+        if (txtUbicacion) txtUbicacion.value = '';
+            const txtNum = document.getElementById('txtNum');
+        if (txtNum) {
+            txtNum.value = 'Auto';
+            txtNum.readOnly = true; // NUM siempre es readonly en creación
+        }
+            const txtNivel = document.getElementById('txtNivel');
+        if (txtNivel) {
+            txtNivel.value = currentUser.nivel === 'ADMIN' ? '' : currentUser.nivel;
+            txtNivel.readOnly = true; // NIVEL siempre es readonly
+        }
+            const btnSave = document.getElementById('btnSaveModal');
+        if (btnSave) {
+            btnSave.style.display = 'inline-block';
+            btnSave.disabled = false;
+        }
     }
-
-    // Resetear NIVEL según usuario
-    const txtNivel = document.getElementById('txtNivel');
-    if (txtNivel) {
-        txtNivel.value = currentUser.nivel === 'ADMIN' ? '' : currentUser.nivel;
-        txtNivel.readOnly = true; // NIVEL siempre es readonly
-    }
-
-    // Mostrar botón de Guardar
-    const btnSave = document.getElementById('btnSaveModal');
-    if (btnSave) {
-        btnSave.style.display = 'inline-block';
-        btnSave.disabled = false;
-    }
-}
 
     function openCreateModal() {
-    // 1. LIMPIAR TODO EL MODAL ROBUSTAMENTE
-    clearModalFields(); 
-
-    // 2. CONFIGURAR TÍTULO
-    document.getElementById('modalTitle').innerText = 'Agregar Nueva Escuela';
-
-    // 3. LÓGICA ESPECÍFICA DE NIVEL Y NUM
-    document.getElementById('txtNum').value = 'Auto'; 
-    document.getElementById('txtNum').readOnly = true; // NUM siempre readonly
-    
-    const txtNivelInput = document.getElementById('txtNivel');
-    if (currentUser.nivel === 'ADMIN') {
-        // ADMIN puede escribir cualquier nivel
-        txtNivelInput.value = ''; 
-        txtNivelInput.readOnly = false;
-        txtNivelInput.placeholder = "Escribe el nivel (ej. PREESCOLAR)";
-    } else {
-        // Encargadas tienen su nivel fijo
-        txtNivelInput.value = currentUser.nivel; 
-        txtNivelInput.readOnly = true;
-    }
-
-    // 4. MANEJO DE PERSONA M-F (Opcional según rol)
-    const personaMF = document.getElementById('txtPersonaMF');
-    if (personaMF) {
-        personaMF.value = ''; // Asegurar limpio
+            clearModalFields(); 
+            document.getElementById('modalTitle').innerText = 'Agregar Nueva Escuela';
+            document.getElementById('txtNum').value = 'Auto'; 
+            document.getElementById('txtNum').readOnly = true;
+            const txtNivelInput = document.getElementById('txtNivel');
+        if (currentUser.nivel === 'ADMIN') {
+            txtNivelInput.value = ''; 
+            txtNivelInput.readOnly = false;
+            txtNivelInput.placeholder = "Escribe el nivel (ej. PREESCOLAR)";
+        } else {
+            txtNivelInput.value = currentUser.nivel; 
+            txtNivelInput.readOnly = true;
+        }
+            const personaMF = document.getElementById('txtPersonaMF');
+        if (personaMF) {
+            personaMF.value = ''; 
         if (currentUser.nivel === 'CONSULTA') {
             personaMF.disabled = true;
         } else {
             personaMF.disabled = false;
         }
+        }
+            document.getElementById('btnSaveModal').style.display = 'inline-block';
+            new bootstrap.Modal(document.getElementById('schoolModal')).show();
     }
-
-    // 5. MOSTRAR BOTÓN GUARDAR
-    document.getElementById('btnSaveModal').style.display = 'inline-block';
-    
-    // 6. ABRIR MODAL
-    new bootstrap.Modal(document.getElementById('schoolModal')).show();
-}
 
     function openEditModal(index) {
-    const row = filteredData[index];
-    
-    document.getElementById('modalTitle').innerText = 'Editar Escuela';
-    document.getElementById('txtRow').value = row._row;
-    
-    // Llenar campos existentes
-    document.getElementById('txtNum').value = row['NUM.'];
-    document.getElementById('txtClave').value = row['CLAVE C.C.T.'];
-    document.getElementById('txtNombre').value = row['NOMBRE ESCUELA'];
-    
-    // ⭐ LÓGICA CRÍTICA PARA NIVEL EN EDICIÓN ⭐
-    const txtNivelInput = document.getElementById('txtNivel');
-    txtNivelInput.value = row['NIVEL'];
-    
-    if (currentUser.nivel === 'ADMIN') {
-        // ADMIN PUEDE EDITAR EL NIVEL
-        txtNivelInput.readOnly = false;
-        txtNivelInput.disabled = false;
-        txtNivelInput.classList.remove('bg-light', 'text-muted'); // Quitar estilos de bloqueo visual si los hubiera
-    } else {
-        // ENCARGADAS NO PUEDEN EDITAR EL NIVEL
-        txtNivelInput.readOnly = true;
-        txtNivelInput.disabled = true; // Asegurar que ni siquiera sea clickeable
-        txtNivelInput.classList.add('bg-light', 'text-muted'); // Estilo visual de bloqueado
-    }
-
-    document.getElementById('txtTurno').value = row['TURNO'];
-    document.getElementById('txtMunicipio').value = row['MUNICIPIO'];
-    document.getElementById('txtLocalidad').value = row['LOCALIDAD'];
-    document.getElementById('txtDireccion').value = row['DIRECCION'];
-    document.getElementById('txtRepresentante').value = row['REPRESENTANTE LEGAL'];
-    document.getElementById('txtTelefonos').value = row['TELEFONOS'];
-    document.getElementById('txtCorreo').value = row['CORREO ELECTRONICO'];
-    document.getElementById('txtAcuerdo').value = row['ACUERDO'];
-    document.getElementById('txtFechaAcuerdo').value = row['FECHA DE ACUERDO'];
-    document.getElementById('txtTotalAcuerdos').value = row['TOTAL DE ACUERDOS'];
-    document.getElementById('txtStatus').value = row['STATUS'];
-    document.getElementById('txtArea').value = row['AREA'];
-    document.getElementById('txtVisitador').value = row['VISITADOR'];
-    document.getElementById('txtPersonaMF').value = row['PERSONA M-F'] || '';
-    document.getElementById('txtObservaciones').value = row['OBSERVACIONES'];
-    document.getElementById('txtUbicacion').value = row['UBICACION'] || '';
-
-    // Habilitar OTROS campos (excepto NUM y NIVEL que ya tratamos arriba)
-    document.querySelectorAll('#schoolModal input, #schoolModal select').forEach(el => {
+            const row = filteredData[index];
+            document.getElementById('modalTitle').innerText = 'Editar Escuela';
+            document.getElementById('txtRow').value = row._row;
+            document.getElementById('txtNum').value = row['NUM.'];
+            document.getElementById('txtClave').value = row['CLAVE C.C.T.'];
+            document.getElementById('txtNombre').value = row['NOMBRE ESCUELA'];
+            const txtNivelInput = document.getElementById('txtNivel');
+            txtNivelInput.value = row['NIVEL'];
+        if (currentUser.nivel === 'ADMIN') {
+            txtNivelInput.readOnly = false;
+            txtNivelInput.disabled = false;
+            txtNivelInput.classList.remove('bg-light', 'text-muted'); // Quitar estilos de bloqueo visual si los hubiera
+        } else {
+            txtNivelInput.readOnly = true;
+            txtNivelInput.disabled = true; // Asegurar que ni siquiera sea clickeable
+            txtNivelInput.classList.add('bg-light', 'text-muted'); // Estilo visual de bloqueado
+        }
+            document.getElementById('txtTurno').value = row['TURNO'];
+            document.getElementById('txtMunicipio').value = row['MUNICIPIO'];
+            document.getElementById('txtLocalidad').value = row['LOCALIDAD'];
+            document.getElementById('txtDireccion').value = row['DIRECCION'];
+            document.getElementById('txtRepresentante').value = row['REPRESENTANTE LEGAL'];
+            document.getElementById('txtTelefonos').value = row['TELEFONOS'];
+            document.getElementById('txtCorreo').value = row['CORREO ELECTRONICO'];
+            document.getElementById('txtAcuerdo').value = row['ACUERDO'];
+            document.getElementById('txtFechaAcuerdo').value = row['FECHA DE ACUERDO'];
+            document.getElementById('txtTotalAcuerdos').value = row['TOTAL DE ACUERDOS'];
+            document.getElementById('txtStatus').value = row['STATUS'];
+            document.getElementById('txtArea').value = row['AREA'];
+            document.getElementById('txtVisitador').value = row['VISITADOR'];
+            document.getElementById('txtPersonaMF').value = row['PERSONA M-F'] || '';
+            document.getElementById('txtObservaciones').value = row['OBSERVACIONES'];
+            document.getElementById('txtUbicacion').value = row['UBICACION'] || '';
+            document.querySelectorAll('#schoolModal input, #schoolModal select').forEach(el => {
         if (el.id === 'txtNum' || el.id === 'txtNivel') return; // Saltar estos dos
         
         if (el.type === 'hidden') return; // Saltar hidden
@@ -1121,90 +1043,75 @@ function clearModalFields() {
             el.readOnly = false;
             el.disabled = false;
         }
-    });
-
-    // Bloquear específicamente NUM (siempre fijo)
-    document.getElementById('txtNum').readOnly = true;
-    document.getElementById('txtNum').classList.add('bg-light', 'text-muted');
-
-    // Manejo especial para CONSULTA (aunque no debería llegar aquí normalmente)
-    if (currentUser.nivel === 'CONSULTA') {
-         document.getElementById('txtPersonaMF').disabled = true;
-         // Opcional: Deshabilitar todo si fuera necesario
+        });
+            document.getElementById('txtNum').readOnly = true;
+            document.getElementById('txtNum').classList.add('bg-light', 'text-muted');
+        if (currentUser.nivel === 'CONSULTA') {
+            document.getElementById('txtPersonaMF').disabled = true;
+        }
+            document.getElementById('btnSaveModal').style.display = 'inline-block';
+            new bootstrap.Modal(document.getElementById('schoolModal')).show();
     }
 
-    document.getElementById('btnSaveModal').style.display = 'inline-block';
-    new bootstrap.Modal(document.getElementById('schoolModal')).show();
-}
-
     function openViewModal(index) {
-    const row = filteredData[index];
-    
-    document.getElementById('modalTitle').innerText = 'Detalles de la Escuela';
-    document.getElementById('txtRow').value = row._row;
-    
-    // Llenar campos
-    document.getElementById('txtNum').value = row['NUM.'];
-    document.getElementById('txtClave').value = row['CLAVE C.C.T.'];
-    document.getElementById('txtNombre').value = row['NOMBRE ESCUELA'];
-    document.getElementById('txtNivel').value = row['NIVEL']; // Solo lectura
-    document.getElementById('txtTurno').value = row['TURNO'];
-    document.getElementById('txtMunicipio').value = row['MUNICIPIO'];
-    document.getElementById('txtLocalidad').value = row['LOCALIDAD'];
-    document.getElementById('txtDireccion').value = row['DIRECCION'];
-    document.getElementById('txtRepresentante').value = row['REPRESENTANTE LEGAL'];
-    document.getElementById('txtTelefonos').value = row['TELEFONOS'];
-    document.getElementById('txtCorreo').value = row['CORREO ELECTRONICO'];
-    document.getElementById('txtAcuerdo').value = row['ACUERDO'];
-    document.getElementById('txtFechaAcuerdo').value = row['FECHA DE ACUERDO'];
-    document.getElementById('txtTotalAcuerdos').value = row['TOTAL DE ACUERDOS'];
-    document.getElementById('txtStatus').value = row['STATUS'];
-    document.getElementById('txtArea').value = row['AREA'];
-    document.getElementById('txtVisitador').value = row['VISITADOR'];
-    document.getElementById('txtPersonaMF').value = row['PERSONA M-F'] || '';
-    document.getElementById('txtObservaciones').value = row['OBSERVACIONES'];
-    document.getElementById('txtUbicacion').value = row['UBICACION'] || '';
-
-    // Poner TODO en modo solo lectura/deshabilitado
-    document.querySelectorAll('#schoolModal input, #schoolModal select').forEach(el => {
+            const row = filteredData[index];
+            document.getElementById('modalTitle').innerText = 'Detalles de la Escuela';
+            document.getElementById('txtRow').value = row._row;
+            document.getElementById('txtNum').value = row['NUM.'];
+            document.getElementById('txtClave').value = row['CLAVE C.C.T.'];
+            document.getElementById('txtNombre').value = row['NOMBRE ESCUELA'];
+            document.getElementById('txtNivel').value = row['NIVEL']; // Solo lectura
+            document.getElementById('txtTurno').value = row['TURNO'];
+            document.getElementById('txtMunicipio').value = row['MUNICIPIO'];
+            document.getElementById('txtLocalidad').value = row['LOCALIDAD'];
+            document.getElementById('txtDireccion').value = row['DIRECCION'];
+            document.getElementById('txtRepresentante').value = row['REPRESENTANTE LEGAL'];
+            document.getElementById('txtTelefonos').value = row['TELEFONOS'];
+            document.getElementById('txtCorreo').value = row['CORREO ELECTRONICO'];
+            document.getElementById('txtAcuerdo').value = row['ACUERDO'];
+            document.getElementById('txtFechaAcuerdo').value = row['FECHA DE ACUERDO'];
+            document.getElementById('txtTotalAcuerdos').value = row['TOTAL DE ACUERDOS'];
+            document.getElementById('txtStatus').value = row['STATUS'];
+            document.getElementById('txtArea').value = row['AREA'];
+            document.getElementById('txtVisitador').value = row['VISITADOR'];
+            document.getElementById('txtPersonaMF').value = row['PERSONA M-F'] || '';
+            document.getElementById('txtObservaciones').value = row['OBSERVACIONES'];
+            document.getElementById('txtUbicacion').value = row['UBICACION'] || '';
+            document.querySelectorAll('#schoolModal input, #schoolModal select').forEach(el => {
         if (el.type === 'hidden') return;
-        
         if (el.tagName === 'SELECT') {
-            el.disabled = true;
+                el.disabled = true;
         } else {
-            el.readOnly = true;
-            el.disabled = true; // Algunos navegadores requieren disabled para bloquear bien inputs text
+                el.readOnly = true;
+                el.disabled = true;
         }
-    });
-
-    document.getElementById('btnSaveModal').style.display = 'none';
-    new bootstrap.Modal(document.getElementById('schoolModal')).show();
+        });
+            document.getElementById('btnSaveModal').style.display = 'none';
+            new bootstrap.Modal(document.getElementById('schoolModal')).show();
    }
 
     async function saveSchool() {
-    const btn = document.getElementById('btnSaveModal');
-    if (btn.disabled) return;
-    const nombreEscuelaInput = document.getElementById('txtNombre');
-    const nombreValor = nombreEscuelaInput.value.trim();
-    if (!nombreValor) {
-        alert("El campo 'NOMBRE ESCUELA' es obligatorio.");
-        nombreEscuelaInput.focus(); // Enfocar el input para que el usuario escriba ahí
-        return; // Detener la ejecución si está vacío
-    }
-    btn.disabled = true;
-    const textoOriginal = btn.innerHTML;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
-
-    try {
-        const rowId = document.getElementById('txtRow').value;
-        let currentComparteValue = '';
+            const btn = document.getElementById('btnSaveModal');
+        if (btn.disabled) return;
+            const nombreEscuelaInput = document.getElementById('txtNombre');
+            const nombreValor = nombreEscuelaInput.value.trim();
+        if (!nombreValor) {
+            alert("El campo 'NOMBRE ESCUELA' es obligatorio.");
+            nombreEscuelaInput.focus(); // Enfocar el input para que el usuario escriba ahí
+            return; // Detener la ejecución si está vacío
+        }
+            btn.disabled = true;
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
+        try {
+            const rowId = document.getElementById('txtRow').value;
+            let currentComparteValue = '';
         if (rowId) {
             const foundRow = filteredData.find(r => r._row == parseInt(rowId));
             if(foundRow) {
                 currentComparteValue = foundRow['COMPARTE'] || '';
-            }
         }
-
+        }
         const payload = {
             username: currentUser.username,
             password: currentUser.pass,
@@ -1234,8 +1141,7 @@ function clearModalFields() {
                 'COMPARTE': currentComparteValue 
             }
         };
-
-        const res = await apiRequest({}, 'POST', payload);
+            const res = await apiRequest({}, 'POST', payload);
         if (res.success) {
             bootstrap.Modal.getInstance(document.getElementById('schoolModal')).hide();
             refreshData();
@@ -1243,36 +1149,35 @@ function clearModalFields() {
         } else {
             alert("Error: " + res.message);
         }
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = textoOriginal;
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = textoOriginal;
+        }
     }
-}
 
-    let eliminando = false; // guard global simple, ya que este botón no tiene id fijo por fila
+        let eliminando = false;
 
-async function deleteSchool(rowId, numEscuela) {
-    if (eliminando) return;
-    if (!confirm(`¿Estás seguro de eliminar la escuela NUM ${numEscuela}?`)) return;
-
-    eliminando = true;
-    try {
-        const payload = { username: currentUser.username, password: currentUser.pass, action: 'delete', row: rowId };
-        const res = await apiRequest({}, 'POST', payload);
+    async function deleteSchool(rowId, numEscuela) {
+        if (eliminando) return;
+        if (!confirm(`¿Estás seguro de eliminar la escuela NUM ${numEscuela}?`)) return;
+            eliminando = true;
+        try {
+            const payload = { username: currentUser.username, password: currentUser.pass, action: 'delete', row: rowId };
+            const res = await apiRequest({}, 'POST', payload);
         if (res.success) {
             refreshData();
             alert(res.message);
         } else {
             alert("Error: " + res.message);
         }
-    } finally {
-        eliminando = false;
+        } finally {
+            eliminando = false;
+        }
     }
-}
 
-        window.addEventListener('DOMContentLoaded', (event) => {
+    window.addEventListener('DOMContentLoaded', (event) => {
             initAreaFilter(); 
-        const savedUser = sessionStorage.getItem('crudUser');
+            const savedUser = sessionStorage.getItem('crudUser');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
             document.getElementById('loginScreen').classList.add('d-none');
@@ -1288,25 +1193,23 @@ async function deleteSchool(rowId, numEscuela) {
             if(currentUser.nivel === 'ADMIN' || currentUser.nivel === 'CONSULTA') {  
              document.getElementById('btnRefresh').classList.remove('d-none');  
              document.getElementById('filtersRow').classList.remove('d-none');  
-} else {  
+        } else {  
              document.getElementById('btnRefresh').classList.add('d-none');  
              document.getElementById('filtersRow').classList.add('d-none');  
-}
-           // Agregar: todos menos CONSULTA
-if(currentUser.nivel !== 'CONSULTA') {  
-    document.getElementById('btnAgregar').classList.remove('d-none');  
-} else {  
-    document.getElementById('btnAgregar').classList.add('d-none');  
-}
-// Notificaciones: solo ADMIN
-if(currentUser.nivel === 'ADMIN') {  
-    document.getElementById('notifContainer').classList.remove('d-none');  
-    checkNotifications();   
-    setInterval(checkNotifications, 60000);   
-} else {  
-    document.getElementById('notifContainer').classList.add('d-none');  
-}
-loadData(); 
+        }
+        if(currentUser.nivel !== 'CONSULTA') {  
+            document.getElementById('btnAgregar').classList.remove('d-none');  
+        } else {  
+            document.getElementById('btnAgregar').classList.add('d-none');  
+        }
+        if(currentUser.nivel === 'ADMIN') {  
+            document.getElementById('notifContainer').classList.remove('d-none');  
+            checkNotifications();   
+            setInterval(checkNotifications, 60000);   
+        } else {  
+            document.getElementById('notifContainer').classList.add('d-none');  
+        }
+            loadData(); 
         }
     });
 </script>
