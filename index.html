@@ -1083,7 +1083,8 @@ function filterTable() {
                 el.disabled = true;
         } else {
                 el.readOnly = true;
-                el.disabled = true;
+                el.disabled = false;
+                el.style.cursor = 'text';
         }
         });
             document.getElementById('btnSaveModal').style.display = 'none';
